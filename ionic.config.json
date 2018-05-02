@@ -1,0 +1,8 @@
+{
+  "name": "Authen2Cate",
+  "app_id": "99cb30b2",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
