@@ -1,0 +1,57 @@
+<ion-header>
+
+    <ion-navbar>
+
+        <div class="header-text">
+
+            <ion-title>Backup Configuration</ion-title>
+
+        </div>
+
+    </ion-navbar>
+</ion-header>
+<ion-content no-bounce padding>
+    <ion-item class="labelWrap">
+        <span class="icon-enable">Enable configuration backups to restore your account using iCloud</span>
+    </ion-item>
+
+   
+    <ion-item>
+        <ion-label class="enableHeader">Enable Backup</ion-label>
+       
+        <ion-label class="colorGray" *ngIf="isbackup">All account data is being backed up and store using iCloud</ion-label>
+  
+        <ion-toggle  class="backupIosToggle" [(ngModel)]="isEnable" (ngModelChange)="enableIcloud()"></ion-toggle>
+    </ion-item>
+   
+
+<span *ngIf="isbackup">   
+    <ion-grid class="backupSumBox">
+        <ion-row class="backupSumHeader">
+            <ion-col>
+                <h2>Backup Summary</h2>
+            </ion-col>
+            <ion-col>
+                <ion-label>Last backup :   {{lastBackupTime}}</ion-label>
+            </ion-col>
+        </ion-row>
+    <span>
+        <ion-row class="sumSelection">
+            <ion-col col-10>OTP Accounts Backed up</ion-col>
+            <ion-col col-2 class="text-right">
+                <img alt="logo" height="30" src='assets/imgs/checked.png'>
+            </ion-col>
+        </ion-row>
+    </span>
+
+    <span *ngIf="isRegisterYes">
+        <ion-row class="sumSelection">
+            <ion-col col-10>SSO Accounts Backed up</ion-col>
+            <ion-col col-2 class="text-right">
+                <img alt="logo" height="30" src='assets/imgs/checked.png'>
+            </ion-col>
+        </ion-row>
+    </span>
+    </ion-grid>
+</span>
+</ion-content>

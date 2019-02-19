@@ -1,0 +1,129 @@
+<!--
+Generated template for the SettingPage page.
+
+See http://ionicframework.com/docs/components/#navigation for more info on
+Ionic pages and navigation.
+-->
+
+
+<ion-header>
+    <ion-navbar hideBackButton>
+        <ion-title class="toolbar-ios-title">
+            <img alt="logo" height="40" src="assets/imgs/a2c-logo.png" (click)="backbtnFun()">
+        </ion-title>
+        <span class="userIcon" *ngIf="isUserRegister">
+            <img alt="logo" height="40" src="assets/imgs/component.png" (click)="userProfileClick()">
+        </span>
+    </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce padding>
+    <div class="mainBox">
+        <div class="greenBox">
+            <div class="iconHeader">
+                <img width="70" src="assets/imgs/Settings-Colored.png">
+                <ion-label class="headingBox">Settings</ion-label>
+            </div>
+            <ion-grid class="upFormBox">
+                    <ion-row class="inputBdrGreeen">
+                            <ion-col col-12>
+                                <h2>Select Protection Method</h2>
+                            </ion-col>
+                            <!-- btnGreen -->
+                            <ion-col col-6 *ngIf="fingerYes" style="text-align: right;">
+                                <button class="{{btnDisableBio}}" id="bioBtn" ion-button clear item-end (click)="SetProtectionClick(1)">Biometric</button>
+                            </ion-col>
+                            <ion-col col-6>
+                                <button class="{{btnDisablePin}}" id="pinBtn" ion-button clear item-end (click)="SetProtectionClick(2)">4 Digit PIN</button>
+                            </ion-col>                
+                        </ion-row>
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <span (click)="openBackUpPage()">
+                            <h2 class="test-top">Application Backup</h2>
+                            <h3 class="text-color disableText">{{isEnable}}</h3>
+                        </span>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button class="btnGray restoreBtn" ion-button clear item-end (click)="restoreBackup()">Restore</button>
+                    </ion-col>
+                </ion-row>
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <h2>Protect Settings</h2>
+                    </ion-col>
+                    <ion-col col-4>
+                        <div class="toggleBtn">
+                            <ion-toggle [(ngModel)]="isSettingProtect" (ngModelChange)="protectionSetting()"></ion-toggle>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <h2>Pin Reset/Create </h2>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button class="btnGray" ion-button clear item-end (click)="clickfun()">{{PinButtonName}}</button>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <h2>Notification Sound</h2>
+                    </ion-col>
+                    <ion-col col-4>
+                        <ion-select class="notiSelect" [(ngModel)]="toppings" (ionChange)="PlayRingtone(toppings)">
+                            <ion-option *ngFor="let ringtone of ring" value="{{ringtone.Url}}" [selected]="toppings == ringtone.Url">
+                                {{ringtone.Name}}</ion-option>
+                        </ion-select>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <h2>Vibration</h2>
+                    </ion-col>
+
+                    <ion-col col-4>
+
+                        <div class="toggleBtn">
+                            <ion-toggle [(ngModel)]="vibration" (ngModelChange)="updateVibrationfun()"></ion-toggle>
+                        </div>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-12>
+                        <h2 class="inherit">Mobile Device Registration (SSO Portal Only)</h2>
+                    </ion-col>
+                    <ion-col col-12>
+                        <h3 class="text-color">{{isRegister}}</h3>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-8>
+                        <h2 class="inherit">End User License Agreement</h2>
+                    </ion-col>
+                    <ion-col col-4>
+                        <button class="btnGray" ion-button clear item-end (click)="openLicence()">  View </button>
+                    </ion-col> 
+                </ion-row>
+
+                <ion-row class="inputBdrGreeen">
+                    <ion-col col-12>
+                        <h2 class="inherit">Verison</h2>
+                    </ion-col>
+                    <ion-col col-12>
+                        <h3 class="text-color">{{MobileAppVersion}}</h3>
+                    </ion-col>
+                </ion-row>
+
+            </ion-grid>
+        </div>
+        <div class="btnBox">
+            <button class="appBtn grayBdr" (click)="FinishButton()">Finish</button>
+        </div>
+    </div>
+</ion-content>

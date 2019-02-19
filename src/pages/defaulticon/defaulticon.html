@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-navbar hideBackButton>
+      <ion-title> 
+         <img alt="logo" height="44"   src="assets/imgs/a2c-logo.png" (click) = "backLogoClick()">
+      </ion-title>      
+              <span class="userIcon" *ngIf="isUserRegister">
+               <img alt="logo" height="40"   src="assets/imgs/component.png" (click) = "userProfileClick()">
+              </span>
+  </ion-navbar>  
+</ion-header>  
+<ion-content no-bounce padding class="accountList" >  
+  <div id="mainDiv" class="mainDivScrol">
+      <div class="iconHeader">
+          <ion-label class="headingBox">Choose App Image</ion-label>
+      </div>
+     <!-- <ion-label class="iconLabel" >Select icon for default account</ion-label> -->
+
+     <div class="appBox">
+
+        <ion-list *ngFor="let iconName of accIcons; let i = index">
+
+            <ion-item class="itemList" (click) = "chooseIcon(iconName.name)">
+
+                <ion-thumbnail item-start>
+
+                  <img    src="assets/account_icon/{{iconName.name}}.png">                  
+
+                </ion-thumbnail>                                                        
+
+            </ion-item>      
+
+        </ion-list>
+
+        <ion-list >
+
+            <ion-item class="itemList" (click) = "chooseGallery()">
+
+                <ion-thumbnail item-start>
+
+                  <img   src="assets/account_icon/gallery.png">                  
+
+                </ion-thumbnail>                                                        
+
+            </ion-item> 
+
+        </ion-list>
+
+        <ion-list > 
+
+            <ion-item class="itemList" (click) = "chooseCamera()">
+
+                <ion-thumbnail item-start>
+
+                  <img   src="assets/account_icon/camera.png">                  
+
+                </ion-thumbnail>                                                        
+
+            </ion-item>     
+
+        </ion-list>
+
+  </div>
+
+
+
+ <div class="btnBox">
+
+    <button class="appBtn grayBdr" (click)="doneClick()">Done</button>
+
+  </div>
+
+
+       <!-- <ion-list *ngFor="let iconName of accIcons; let i = index">
+           <ion-item class="itemList" (click) = "chooseIcon(iconName.name)">
+                 <ion-thumbnail item-start>  
+                        <img   src="assets/account_icon/{{iconName.name}}.png">   
+                   </ion-thumbnail>
+           </ion-item>     
+          </ion-list>
+          <ion-list >
+            <ion-item class="itemList" (click) = "chooseIcon(iconName.name)">
+                  <ion-thumbnail item-start>  
+                         <img   src="assets/account_icon/camera.png">   
+                    </ion-thumbnail>
+            </ion-item>     
+           </ion-list>
+           <ion-list >
+            <ion-item class="itemList" (click) = "chooseIcon(iconName.name)">
+                  <ion-thumbnail item-start>  
+                         <img   src="assets/account_icon/gallery.png">   
+                    </ion-thumbnail>
+            </ion-item>     
+           </ion-list> -->
+              </div>
+</ion-content>
+
+

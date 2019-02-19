@@ -1,0 +1,39 @@
+page-welcome {
+    .scroll-content {
+        overflow-y: hidden;
+        text-align: center;
+        button {
+            text-align: center;
+        }
+        .btn-color {
+            /* background-color: #4e5f99 !important;*/
+            background-color: #192740 !important;
+            width: 60%;
+            margin-top: 11%;
+            text-transform: capitalize !important;
+            height: 4.6rem !important;
+            font-size: 1.6rem !important;
+        }
+        .bottomTextArea {
+            margin-top: 29%;
+            color: #47525e;
+            font-size: 17px;
+            img {
+                width: 72%;
+            }
+        }
+    }
+    .img-logo {
+        width: 100%;
+        text-align: center;
+        margin-top: 20%;
+    }
+    .img-responsive {
+        width: 78%;
+        height: auto;
+        margin-top: 44%;
+    }
+    .btn-top-mar {
+        padding-top: 16% !important;
+    }
+}

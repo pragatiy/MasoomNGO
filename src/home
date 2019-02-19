@@ -1,0 +1,72 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="toolbar-ios-title">
+            <img alt="logo" height="40" src="assets/imgs/a2c-logo.png" (click)="menuClick()">
+        </ion-title>    
+         
+        <span *ngIf="isUserRegister" class="userBtn">
+            <ion-icon class="usericon" ios="ios-contact" md="md-contact" (click)="userProfileClick()"></ion-icon>
+        </span>
+		
+		<!--   <button  (click)="hideMenu()"  class="menu-icon" style="margin:2px 15px;"><ion-icon  ios="ios-menu" md="md-menu" ></ion-icon></button>-->
+
+       <!-- <ion-icon class="menu-icon" style="margin:2px 15px;" ios="ios-menu" md="md-menu" (click)="hideMenu()"></ion-icon> -->
+    </ion-navbar>
+</ion-header>    
+<ion-content no-bounce padding class="accountList" (click) = "menuClick()">   
+
+    <ion-list *ngFor="let name of names; let i = index"> 
+        <ion-item class="pl-0 ">
+            <ion-thumbnail item-start>
+                <img src="{{name.imageSrc||'assets/imgs/user_img.jpg'}}">
+            </ion-thumbnail>
+            <span class="accName" (click) = "checkProtection(name.accountIndex,i)">
+                <h2>{{name.accountName}}</h2>
+                <p>{{name.accountId}}</p>	
+
+            </span>
+            <button *ngIf="name.isRegister;else editAcc_content" class="pr-0" ion-button clear item-end>
+                <ion-icon name="ios-more" [attr.id]="'editIconId'+i" class="dot_icon" (click)="editAccount(name.accountIndex,i)"></ion-icon>
+            </button>
+
+          </ion-item>
+        <div class="totpCode" [attr.id]="'divId' + i">
+             <ion-grid>
+            </ion-grid>                  
+        </div>
+    </ion-list>
+    <div class="popup-screen" id="{{showhidemenu}}">
+        <ul>
+                <li (click)="ConfirmUser('ResetPassword')" *ngIf="isUserRegister">
+                    <a href="#">
+                        <ion-icon ios="ios-key" md="ios-key-outline"></ion-icon>
+                        <span style="margin-left: 10px;">Reset Password</span>
+                    </a>
+                </li>
+                <li (click)="ConfirmUser('UnlockAccount')" *ngIf="isUserRegister">
+                    <a href="#">
+                        <ion-icon ios="ios-unlock" md="md-unlock"></ion-icon>
+                        <span style="margin-left: 10px;">Unlock Account</span>
+                    </a>
+                  </li>
+                <li (click)="editSettings()">
+                    <a href="#">
+                        <ion-icon name="settings"></ion-icon>
+                        <span style="margin-left: 10px;">Settings</span>
+                    </a>
+                </li>
+                <li (click)="modifyOrder()">
+                    <a href="#">
+                        <ion-icon name="ios-keypad"></ion-icon><span style="margin-left: 10px;">Modify Order</span>
+                    </a>
+                </li>
+</ul>
+    </div>
+    <ion-fab right bottom class="addIcon">
+        <button ion-fab color="blue" (click) = "barcodeClick()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>  
+	
+
+	 
+</ion-content>
+

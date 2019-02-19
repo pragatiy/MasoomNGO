@@ -1,0 +1,29 @@
+<!--
+  Generated template for the ModifyOrderPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+	<ion-navbar>
+		<div class="header-text" id="jjj">
+			 <ion-title>Modify Account Order
+             </ion-title>
+		</div>
+        <button class="saveBtn" item-right (click)="modifyAccountOrder()">SAVE</button>  
+	</ion-navbar>
+</ion-header>
+<ion-content no-bounce padding class="accountList">        
+    <ion-list  [reorder]="reorderIsEnabled" (ionItemReorder)="reorderItems($event)"> 
+        <ion-item class="pl-0 " *ngFor="let name of names; let i = index" >
+            <ion-thumbnail item-start>
+                <img src="{{name.imageSrc||'assets/imgs/user_img.png'}}">
+            </ion-thumbnail>
+            <span class="accName">
+                <h2>{{name.accountName}}</h2>
+                <p>{{name.accountId}}</p>	
+            </span>
+            <ion-infinite-scroll (ionInfinite)="doInfinite($event)"></ion-infinite-scroll>
+       </ion-item>
+    </ion-list> 
+</ion-content>

@@ -1,0 +1,126 @@
+// page-generate-pin {
+//     .header-text {
+//         ion-title {
+//             width: calc(100% - 52px);
+//             color: #ffF;
+//             text-align: center;
+//             .toolbar-title {
+//                 color: #fff;
+//                 padding-top: 0px;
+//             }
+//         }
+//     }
+//     .bar-button-default,
+//     .bar-button-clear-default,
+//     .bar-button-default {
+//         color: white !important;
+//     }
+//     .generatePin {
+//         .scroll-content {
+//             overflow: inherit;
+//             padding: 0 !important;
+//             .title {
+//                 text-align: center;
+//                 margin: 30px 0;
+//                 margin-left: 100px;
+//             }
+//             .circlePin {
+//                 width: 220px;
+//                 .col {
+//                     text-align: center;
+//                     border-bottom: 2px solid #ccc;
+//                     margin: 0 8px;
+//                     .img-loaded {
+//                         img {
+//                             background: #fff;
+//                         }
+//                     }
+//                 }
+//             }
+//             .keyBoard {
+//                 position: absolute;
+//                 bottom: 0;
+//                 background: #ddd;
+//                 button {
+//                     width: 100% !important;
+//                     text-align: center;
+//                     min-height: 50px;
+//                     font-size: 18px;
+//                     background: #fff;
+//                     border-radius: 3px;
+//                     box-shadow: 0 2px 5px #aaa;
+//                 }
+//             }
+//         }
+//     }
+// }
+
+page-generate-pin {
+    .bar-button-default,
+    .bar-button-clear-default,
+    .bar-button-default {
+        color: white !important;
+    }
+    .generatePin {
+        .scroll-content {
+            overflow: inherit;
+            padding: 0 !important;
+            .title {
+                text-align: center;
+                margin: 30px 0;
+            }
+            .circlePin {
+                width: 318px;
+                background: #fff;
+                border: 1px solid #8cc63f;
+                height: 90px;
+                padding: 20px 16px;
+                margin-top: 80px;
+                .dotBox {
+                    width: 55px;
+                    height: 50px;
+                    text-align: center;
+                    background: #d6e8ed;
+                    margin: auto 8px;
+                    padding: 11px;
+                    .img-loaded {
+                        display: inline-block;
+                        min-width: 30px;
+                        min-height: 30px;
+                        background: transparent;
+                        /*   contain: strict; */
+                    }
+                }
+            }
+            .blueHeading {
+                margin: 25px 0;
+                text-align: center;
+                font-size: 22px;
+                font-weight: 400;
+                color: #192942;
+            }
+            .keyBoard {
+                position: absolute;
+                bottom: 0;
+                background: #ddd;
+                button {
+                    width: 100% !important;
+                    text-align: center;
+                    min-height: 50px;
+                    font-size: 18px;
+                    background: #fff;
+                    border-radius: 3px;
+                    box-shadow: 0 2px 5px #aaa;
+                }
+            }
+            .unselectable {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+        }
+    }
+}

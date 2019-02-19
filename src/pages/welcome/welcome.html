@@ -1,0 +1,49 @@
+<!--
+  Generated template for the WelcomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!--<ion-header>
+
+  <ion-navbar  hideBackButton>
+  
+  </ion-navbar>
+
+
+</ion-header>
+-->
+<!-- 
+<ion-content padding>
+
+  	<ion-row>
+				<ion-col class="imgclass img-logo">
+            <img class="img-responsive" alt="logo" src="assets/imgs/welcomeLogoNew.png" />  
+					
+				</ion-col>          
+			</ion-row>
+
+    
+ <div class="wlcmBtnBox">
+   <div class="innerBtnBox">
+    <button class="btn-color delAccBtn" ion-button (click) = "redirectToApp()">Continue to App</button>   
+
+    <button class="btn-color delAccBtn" ion-button (click) = "RestoreBackup()">Restore From Backup</button>   
+   </div>
+   <div class="bottomTextArea">
+     <img alt="bottomText" src="assets/imgs/bottomText.png" />  
+   </div>
+ </div>
+</ion-content> -->
+  <ion-content  no-bounce padding scroll-content1>  
+    <ion-col class="imgclass img-logo">  
+      <img class="img-responsive" alt="logo" src="assets/imgs/welcomeLogoNew.png" />  
+    </ion-col>  
+    <div class="btn-top-mar">  
+      <button class="btn-color" ion-button (click)="redirectToApp()">Continue to App</button> 
+      <button class="btn-color" ion-button (click)="RestoreBackup()">Restore From Backup</button>  
+    </div>  
+    <div class="bottomTextArea">  
+      <img class="img-bottom" alt="logo" src="assets/imgs/bottomText.png" />  
+    </div>  
+  </ion-content>

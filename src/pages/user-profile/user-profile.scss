@@ -1,0 +1,182 @@
+page-user-profile {
+    .imgclassuser {
+        margin: auto;
+        img {
+            width: 170px;
+            height: 170px;
+            max-width: 170px;
+        }
+    }
+    .updateclass {
+        padding: 25px;
+    }
+    .errorclass {
+        color: red;
+    }
+    .col-center {
+        margin-left: 65px;
+    }
+    .btn-color {
+        background-color: #192740 !important;
+    }
+    .proClass {
+        color: #968a8a !important;
+    }
+    .addImageForm {
+        .scroll-content {
+            padding: 0 !important;
+            .imgBox {
+                position: relative;
+                padding: 0;
+                .imgclass {
+                    text-align: center;
+                }
+                .userImageBox {
+                    background: #192740;
+                    position: relative;
+                    height: 120px;
+                    margin-bottom: 60px;
+                    img {
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                        bottom: -60px;
+                        border-radius: 50%
+                    }
+                }
+                .imgEdit {
+                    position: absolute;
+                    left: 0;
+                    right: -72px;
+                    bottom: 18px;
+                    padding: 2px;
+                    margin: auto;
+                    width: 20px;
+                    height: 20px;
+                    background: #fff;
+                    border-radius: 50%;
+                    text-align: center;
+                    border: 1px solid #fff;
+                    box-shadow: 0 0 2px #000;
+                }
+            }
+
+            .upFormBox {
+                padding: 25px;
+                .label {
+                    color: #192942;
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+                .greenLabel {
+                    color: #009245;
+                    font-size: 17px;
+                    padding-left: 20px;
+                    overflow: visible;
+                }
+            }
+ 
+            .headingLarge {
+                color: #192942;
+                font-size: 24px;
+                border: 0;
+                font-weight: bold;
+                text-align: center;
+                margin: 0;
+            }
+            .colorOrange {
+                color: #F58438;
+                margin: 8px 0;
+                text-align: center;
+            }
+            // .userName {
+            //     text-align: center;
+            //     width: 80%;
+            //     margin: 40px auto 5px;
+            // }
+            .userAddress {
+                text-align: center;
+                margin: 0;
+                color: #777;
+                font-weight: normal;
+            }
+            .label-md {
+                color: #000;
+            }
+            .input-md {
+                font-size: 1.4rem;
+            }
+            .toggleBtn {
+                padding: 0;
+                float: right;
+                .toggle {
+                    padding: 12px 0;
+                }
+            }
+        }
+    }
+
+    .addImageForm.content-ios{
+        .scroll-content{
+            .imgBox{
+                .userImageBox{
+                    height: 140px;
+                    margin-bottom: 70px;
+                    img{
+                        bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .image-box {
+        display: inline-block;
+        border: 1px solid #eee;
+        border-radius: 3px;
+        margin: auto;
+    }
+    .img {
+        height: 70px;
+        width: auto;
+        margin: auto;
+        display: block;
+    }
+    .errorclass {
+        color: red !important;
+        margin-left: 14px;
+    }
+    .btn-color {
+        background-color: #192740 !important;
+    }
+    .delAccBtn {
+        margin: auto;
+    }
+}
+
+.pad-0 {
+    padding: 0 !important;
+}
+
+.pr-0 {
+    padding-right: 0 !important;
+}
+
+.pl-0 {
+    padding-left: 0 !important;
+}
+
+.pull-right {
+    float: right !important;
+}
+
+.bar-button-default-ios,
+.bar-button-clear-ios-default,
+.bar-button-ios-default {
+    color: white !important;
+}
+.toolbar-ios ion-title{
+   // padding: 0 !important;
+    position: relative;
+}

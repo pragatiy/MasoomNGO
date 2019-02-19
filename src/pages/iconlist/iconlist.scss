@@ -1,0 +1,65 @@
+page-iconlist {
+    .header-text {
+        margin: auto;
+        ion-title {
+            /*width: calc(100% - 30px);*/
+            color: #ffF;
+            text-align: center;
+            .toolbar-title {
+                color: #fff;
+            }
+        }
+    }
+    .iconText {
+        font-size: 20px !important;
+    }
+    .item-ios {
+        padding-left: 16px !important;
+    }
+    .iconLabel {
+        font-size: 20px !important;
+        color: #4c4a4a !important;
+    }
+    .accountList{
+     background-color: #D6E8ED;
+    }
+    .accountList ion-list.list {
+        margin: 0;
+        margin-bottom: 10px;    
+       // border-bottom: 1px solid #4c4a4a !important;
+    }
+    .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+        border: 1px solid #EDFFCA !important;
+    }
+    .list-ios > .item-block:first-child{
+        border: 1px solid #EDFFCA !important;
+
+    }
+
+//     .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+//         border-bottom: 0.55px solid #EDFFCA !important;
+//     }
+//    .list-ios > .item-block:first-child{
+//     border-top: 0.55px solid #EDFFCA !important;
+
+//    }
+
+//    .item-ios.item-block .item-inner {
+//     border-bottom: 0.55px solid #EDFFCA !important;
+//     }
+
+// .item-ios.item-block .item-inner{
+//     border-bottom: 0.55px solid #EDFFCA !important;
+// }
+// .list-ios > .item-block:last-child, 
+// .list-ios > .item-wrapper:last-child .item-block{
+//     border-bottom: 0.55px solid #EDFFCA !important;
+// }
+
+// .list-ios > .item-block:first-child{
+//     border-bottom: 0.55px solid #EDFFCA !important;
+// }
+    
+
+}
+
