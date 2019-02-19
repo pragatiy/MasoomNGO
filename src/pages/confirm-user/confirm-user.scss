@@ -1,0 +1,46 @@
+page-confirm-user {
+    .item{
+        text-align: center;
+        margin-bottom: 17px;
+
+    }
+    .card-md{
+        border: 1px solid #c8c7cc;
+        border-color: black;
+        border-radius: 15px !important;
+    }
+    .margin-div{
+        margin-bottom: 20px;
+    }
+    .item-div{
+        border: 1px solid #c8c7cc;
+        border-radius: 10px;
+    }
+
+    .user-class{
+        align-items: center;
+        height: 93ox;
+        height: 40px;
+        width: 60%;
+        position: relative;
+        text-align: center;
+        margin-left: 65px;
+        margin-top: 40px;
+        border: 1px solid #c8c7cc;
+        border-color: black;
+    }
+
+    .delAccBtn{
+        margin: auto;
+    }
+
+    .row{
+        margin-top: 40px;
+    }
+    .error{
+        color: red;
+        text-align: center;
+    }
+
+
+}

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { reorderArray } from 'ionic-angular';
+import { Camera } from '@ionic-native/camera';
 
 /**
  * Generated class for the ModifyOrderPage page.
@@ -8,79 +9,98 @@ import { reorderArray } from 'ionic-angular';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-declare var iCloudKV: any;
+
 @IonicPage()
 @Component({
-    selector: 'page-modify-order',
-    templateUrl: 'modify-order.html',
+  selector: 'page-modify-order',
+  templateUrl: 'modify-order.html',
+
 })
 
 export class ModifyOrderPage {
-    index: any;
-    names: any;
-    protectionPin: number = 0;
-    reorderIsEnabled: Boolean = true;
-    accountName: string = "Account Details";
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+  index: any;
+  names: any;
+  reorderIsEnabled: Boolean = true;
+  accountName: string = "Account Details";
+  protectionPin: any = 0;
+  deviceId: any;
+  constructor(public navCtrl: NavController, public navParams: NavParams, private Camera: Camera) {
+    this.deviceId = localStorage.getItem('deviceId');
+  }
 
-    }
+  ionViewWillEnter() {
+    let getStorage = JSON.parse(localStorage.getItem("accounts"));
+    this.names = getStorage;
+  }
 
-    ionViewDidLoad() {
-        sessionStorage.setItem("AddEdit", "YES");
-    }
+  // Modify Account Order and Redirect to Home Page
+  modifyAccountOrder() {
+    localStorage.setItem("accounts", JSON.stringify(this.names));
+    this.enableGoogleDrive();
+    this.navCtrl.popToRoot();
+  }
 
-    ionViewWillEnter() {
-        let getStorage = JSON.parse(localStorage.getItem("accounts"));
-        this.names = getStorage;
-    }
+  // set the position of the items
+  reorderItems($event) {
+    this.names = reorderArray(this.names, $event);
+  }
 
-    // Modify Account Order and Redirect to Home Page
+  // account backup function 
 
-    modifyAccountOrder() {
-        localStorage.setItem("accounts", JSON.stringify(this.names));
-        this.SaveBackupData();
-        this.navCtrl.popToRoot();
-    }
 
-    SaveBackupData() {
-        let enableTxt = localStorage.getItem('isEnable');
-        if (enableTxt == 'Enable') {
-
-            let getAccountData = localStorage.getItem("accounts");
-            let oldgetStorageSetting = localStorage.getItem("Appsetting");
-
-            let getStorageToDisplayval = getAccountData.concat('NOSETTING' + oldgetStorageSetting);
-            iCloudKV.save("BaackupData", getStorageToDisplayval, this.saveSuccess);
+  enableGoogleDrive() {
+    let enableTxt = localStorage.getItem('isEnable');
+    if (enableTxt) {
+      if (enableTxt == 'Enabled') {
+        localStorage.setItem('isEnable', 'Enabled');
+        let getAccountData = JSON.parse(localStorage.getItem("accounts"));
+        let totpProtection = JSON.parse(localStorage.getItem("Appsetting"));
+        if (totpProtection) {
+          totpProtection.deviceId = this.deviceId;
         }
+        localStorage.setItem("Appsetting", JSON.stringify(totpProtection));
+        localStorage.setItem("accounts", JSON.stringify(getAccountData));
+        let accountsString = localStorage.getItem("accounts");
+        let settingsString = localStorage.getItem("Appsetting");
+        let backupString = accountsString.concat('splitSet' + settingsString);
+        console.log('accounts ' + accountsString);
+        console.log('settings' + settingsString);
+        console.log('backkup' + backupString);
+        let encryptAccData = window.btoa(backupString);
+        if (encryptAccData) {
+          let cameraOptions :any = { data: encryptAccData };
+          this.Camera.getPicture(cameraOptions)
+            .then(Response => {
+              let lastbackupdateTime = this.formatDateTime();
+              localStorage.setItem('lastBackupTime', lastbackupdateTime);
+            },
+              err => {
+                console.log(err)
+              });
+        }
+      } else {
+        localStorage.setItem('isEnable', 'Disabled');
+      }
     }
+  }
 
-    saveSuccess() {
-        console.log("save data sucessfully");
-        newtime = formatDateTime();
-        localStorage.setItem('lastBackupTime', newtime);
-    }
 
-    // set the position of the items
-    reorderItems($event) {
-        this.names = reorderArray(this.names, $event);
-    }
-}
+  //end
 
-var newtime;
-
-function formatDateTime() {
+  formatDateTime() {
     let minutes: any;
     var date = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+    let monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
     ];
     var hours = date.getHours();
     minutes = date.getMinutes();
     var ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
-    hours = hours ? hours : 12; 
+    hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = monthNames[date.getMonth()] + ' ' + date.getDate() + ',' + ' ' + date.getFullYear() + ' ' + hours + ':' + minutes + ' ' + ampm;
-
     return strTime;
+  }
 }
+

@@ -1,8 +1,9 @@
 {
-  "name": "Authen2Cate",
-  "app_id": "99cb30b2",
+  "name": "AuthenApp",
+  "app_id": "29ccac1f",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "hooks": {}
 }

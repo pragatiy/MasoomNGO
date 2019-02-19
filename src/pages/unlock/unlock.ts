@@ -1,3 +1,4 @@
+
 import { Component, ViewChild } from '@angular/core';
 import { NavController, App, ModalController, NavParams, Navbar, IonicPage, LoadingController, AlertController } from 'ionic-angular';
 import { A2cApiProvider } from '../../providers/a2c-api/a2c-api';
@@ -9,6 +10,7 @@ import "rxjs/add/observable/interval";
 import { File } from '@ionic-native/file';
 import { PasswordPolicyPage } from '../password-policy/password-policy';
 import { UserProfilePage } from "../user-profile/user-profile";
+import { commonString } from "../.././app/commonString";
 
 /**
  * Generated class for the UnlockPage page.
@@ -19,12 +21,12 @@ import { UserProfilePage } from "../user-profile/user-profile";
 
 @IonicPage()
 @Component({
-  selector: 'page-unlock',
-  templateUrl: 'unlock.html',
+    selector: 'page-unlock',
+    templateUrl: 'unlock.html',
 })
 export class UnlockPage {
 
-  @ViewChild(Navbar) navBar: Navbar;
+    @ViewChild(Navbar) navBar: Navbar;
     userName: String;
     firstName: String;
     lastName: String;
@@ -47,17 +49,17 @@ export class UnlockPage {
     actionSheet: any;
     isSliderTxt: boolean = true;
     companyLogo: any;
-    islock: string = 'SlideLock';
     Accepted: string;
     Rejected: string;
     BackColor: any;
     loading: any;
     isUserRegister: Boolean = false;
-    cancelBtn:Boolean = true;
     cNane: any;
-    ConfirmColor:string;
-    sheetOpen:Boolean=false;
-    isTimeout:Boolean=false;
+    islock: String = 'lockGreenIcon';
+    ConfirmColor: string;
+    cancelBtn: Boolean = true;
+    sheetOpen: Boolean = false;
+    isTimeOut: Boolean = false;
     constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public actionSheetCtrl: ActionSheetController,
@@ -67,13 +69,12 @@ export class UnlockPage {
         public app: App,
         private toast: Toast,
         private alertCtrl: AlertController,
-        private file: File) {
+        private file: File
+    ) {
 
         this.loading = this.loadingCtrl.create({
-            content: 'Please wait...'
+            content: commonString.unlockPage.waitMsg
         });
-
-
 
         this.notification = navParams.get("notification");
         this.PushFlag = navParams.get("PushFlag");
@@ -82,32 +83,33 @@ export class UnlockPage {
         this.cNane = UserInfoStorage.CN;
 
         if (this.notification) {
-            
-            if(this.notification.responseUrl){
-               localStorage.setItem('dataResponseUrl',this.notification.responseUrl);
+            if (this.notification.responseUrl) {
+                localStorage.setItem('dataResponseUrl', this.notification.responseUrl);
             }
 
-            this.firstName = this.notification.firstName;
-            this.lastName = this.notification.lastName;
+            this.firstName = this.notification.additionalData.firstName;
+            this.lastName = this.notification.additionalData.lastName;
             this.companyName = UserInfoStorage.CN;
-            this.appName = this.notification.aps.alert.title;
-            this.IPaddress = this.notification.IP;
-            this.userName = this.notification.UID;
-            if (this.notification.CT == " " && this.notification.S == " ") {
+            this.appName = this.notification.title;
+            this.companyName = this.notification.additionalData.companyName;
+            this.IPaddress = this.notification.additionalData.IP;
+            this.userName = this.notification.additionalData.UID;
+            if (this.notification.additionalData.CT == ' ' && this.notification.additionalData.S == ' ') {
                 this.countryCityState = '';
             } else {
-                this.countryCityState = this.notification.CT + "," + this.notification.S;
+                this.countryCityState = this.notification.additionalData.CT + ',' + this.notification.additionalData.S;
             }
-            this.dateTime = this.notification.T;
+            this.dateTime = this.notification.additionalData.T;
         }
         else {
-            this.appName = "";
-            this.companyName = "";
-            this.IPaddress = "";
-            this.userName = "";
-            this.countryCityState = "";
-            this.dateTime = "";
+            this.appName = '';
+            this.companyName = '';
+            this.IPaddress = '';
+            this.userName = '';
+            this.countryCityState = '';
+            this.dateTime = '';
         }
+
         if (this.PageName == "ResetPassword") {
             this.pageTitle = "Reset Password";
         }
@@ -116,8 +118,10 @@ export class UnlockPage {
         }
         let date = new Date();
         this.timeStamp = date.getTime();
-
     }
+
+
+
     ionViewWillEnter() {
         this.intervalId = Observable.interval(1000).subscribe(x => {
             this.timerClick();
@@ -133,7 +137,6 @@ export class UnlockPage {
     }
 
     userProfileClick() {
-        
         this.navCtrl.push(UserProfilePage);
     }
 
@@ -152,24 +155,27 @@ export class UnlockPage {
     }
 
     timerClick() {
-        debugger;
+        try{
         this.timer = this.timer - 1;
         if (this.timer == 0) {
 
-            if(this.isTimeout==false){
+            if (this.isTimeOut == false) {
                 if (this.actionSheet) {
                     this.actionSheet.dismiss();
                 }
-                this.timeoutClick();  
-             }
+                this.timeoutClick();
+                this.app.getRootNav().setRoot(HomePage);
+            }
+
             if (this.actionSheet) {
                 this.actionSheet.dismiss();
             }
             this.intervalId.unsubscribe();
 
-             this.app.getRootNav().setRoot(HomePage);
+
         }
         this.timerCss = Math.round((this.timer) * 10);
+          } catch (error) { console.log("Error occured"); }
     }
 
     ionViewDidLoad() {
@@ -183,43 +189,43 @@ export class UnlockPage {
         this.intervalId.unsubscribe();
     }
 
-
     // slider click
 
     logDrag(item) {
-       
+        try{
+        this.cancelBtn = false;
         this.Rejected = '';
         this.Accepted = '';
         this.isSliderTxt = true;
-        this.islock = 'SlideLock';
+        this.islock = 'lockGreenIcon';
         let percent = item.getSlidingPercent();
 
         if (percent === -1) {
-            this.isTimeout=true;
-            if(this.sheetOpen == false){
-            this.sheetOpen=true;
-            this.cancelBtn = false;
-            console.log("negetive");
-            this.BackColor = "Red";
-            this.Accepted = 'ACCEPTED';
-            this.isSliderTxt = false;
-            this.islock = 'unlockGreenIcon';
-            this.ConfirmColor = 'GreenColor';
-            // positive
-            setTimeout(() => { this.RequestMethodforYes(); }, 3000);
+            this.isTimeOut = true;
+            if (this.sheetOpen == false) {
+                this.sheetOpen = true;
+                this.cancelBtn = false;
+                console.log("negetive", this.Accepted);
+                this.BackColor = "Red";
+                this.Accepted = 'ACCEPTED';
+                this.isSliderTxt = false;
+                this.islock = 'unlockGreenIcon';
+                this.ConfirmColor = 'GreenColor';
+                // positive
+                setTimeout(() => { this.RequestMethodforYes(); }, 3000);
             }
         } else if (percent === 1) {
-          
             this.cancelBtn = false;
             this.BackColor = "Green";
             console.log("positive");
-            this.Rejected = 'REJECTED';
+            this.Rejected = 'Rejected';
             this.isSliderTxt = false;
-            this.islock = 'SlideLock';
+            this.islock = 'lockGreenIcon';
             this.ConfirmColor = 'RedColor';
+            console.log("negetive", this.Accepted);
             // negative
-
             setTimeout(() => { this.cancelActionSheet(); }, 3000);
+
 
         } else if (percent >= -0.03199837424538352 && percent <= 0.03199837424538352) {
             console.log("middle");
@@ -234,9 +240,8 @@ export class UnlockPage {
         if (Math.abs(percent) > 1) {
             console.log('overscroll');
         }
-  
-
-    }
+     } catch (error) { console.log("Error occured"); }
+   }
 
     // Call Method
 
@@ -246,6 +251,7 @@ export class UnlockPage {
             this.ResetPasswordYes();
         }
         else if (this.PushFlag == "UnlockAccountPush") {
+            debugger;
             this.unlockAccountYes();
         }
         else {
@@ -260,14 +266,13 @@ export class UnlockPage {
         clearInterval(this.intervalId);
         this.navCtrl.push(PasswordPolicyPage);
 
-
-
     }
-
 
     //Call API for Unlock Account Yes
 
     unlockAccountYes() {
+        debugger;
+        try{
         this.intervalId.unsubscribe();
         this.loading.present();
         let sessionid = localStorage.getItem('sessionId');
@@ -291,7 +296,7 @@ export class UnlockPage {
                 else if (sucessCode == 100) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Registration key not found on the database.',
+                        subTitle: commonString.unlockPage.errRegistrationKey,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -299,7 +304,7 @@ export class UnlockPage {
                 else if (sucessCode == 400) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Request Failed.',
+                        subTitle: commonString.unlockPage.requestFailed,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -308,7 +313,7 @@ export class UnlockPage {
                 else if (sucessCode == 700) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'User ID not found.',
+                        subTitle: commonString.unlockPage.userIdMsg,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -316,13 +321,12 @@ export class UnlockPage {
                 else {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'connectivity error.',
+                        subTitle: commonString.unlockPage.connectivityErr,
                         buttons: ['Ok']
                     });
                     alert.present();
                     console.log("Sucess data" + JSON.stringify(result));
                 }
-
 
             },
             (error) => {
@@ -330,13 +334,13 @@ export class UnlockPage {
 
             }
         );
-
-
+      } catch (error) { console.log("Error occured"); }
     }
 
     //Call API for Push To Phone Yes
 
     LoginAccountYes() {
+        try{
         this.intervalId.unsubscribe();
         this.loading.present();
         this.restProvider.pushToPhoneYes().subscribe(
@@ -359,7 +363,7 @@ export class UnlockPage {
                 else if (sucessCode == 100) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Registration key not found on the database.',
+                        subTitle: commonString.unlockPage.errRegistrationKey,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -367,7 +371,7 @@ export class UnlockPage {
                 else if (sucessCode == 400) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Request Failed.',
+                        subTitle: commonString.unlockPage.requestFailed,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -375,7 +379,7 @@ export class UnlockPage {
                 else if (sucessCode == 700) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'User ID not found.',
+                        subTitle: commonString.unlockPage.userIdMsg,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -383,7 +387,7 @@ export class UnlockPage {
                 else {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'connectivity error.',
+                        subTitle: commonString.unlockPage.connectivityErr,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -396,58 +400,58 @@ export class UnlockPage {
 
             }
         );
-
-
+       } catch (error) { console.log("Error occured"); }
     }
 
     // POPUP for Cancel Button
 
     cancelActionSheet() {
+        try{
         if (this.timer == 0) {
-        }else{
-        if(this.sheetOpen == false){
-            this.sheetOpen=true;
-        this.actionSheet = this.actionSheetCtrl.create({
-            title: 'Message',
-            buttons: [
-                {
-                    text: 'Fraud',
-                    role: 'destructive',
-                    handler: () => {
-                        this.isTimeout=true;
-                        this.fraudClick();
-                    }
-                },
-                {
-                    text: 'Mistake',
-                    handler: () => {
-                        console.log('Archive clicked');
-                        this.isTimeout=true;
-                        this.mistakeClick();
-                    }
-                },
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                        this.isTimeout=true;
-                        this.navCtrl.popToRoot();
-                    }
-                }
-            ]
-        });
+        } else {
+            if (this.sheetOpen == false) {
+                this.sheetOpen = true;
+                this.actionSheet = this.actionSheetCtrl.create({
+                    title: 'Message',
+                    buttons: [
+                        {
+                            text: 'Fraud',
+                            role: 'destructive',
+                            handler: () => {
+                                this.isTimeOut = true;
+                                this.fraudClick();
+                            }
+                        },
+                        {
+                            text: 'Mistake',
+                            handler: () => {
+                                console.log('Archive clicked');
+                                this.isTimeOut = true;
+                                this.mistakeClick();
+                            }
+                        },
+                        {
+                            text: 'Cancel',
+                            role: 'cancel',
+                            handler: () => {
+                                console.log('Cancel clicked');
+                                this.isTimeOut = true;
+                                this.app.getRootNav().setRoot(HomePage);
+                            }
+                        }
+                    ]
+                });
 
-        this.actionSheet.present();
-    }else{
-
-    }
-}
+                this.actionSheet.present();
+            }
+        }
+      } catch (error) { console.log("Error occured"); }
     }
 
     //Fraud Api Request
 
     fraudClick() {
+        try{
         this.intervalId.unsubscribe();
         this.loading.present();
 
@@ -473,7 +477,7 @@ export class UnlockPage {
                 else if (sucessCode == 100) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Registration key not found on the database.',
+                        subTitle: commonString.unlockPage.errRegistrationKey,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -481,7 +485,7 @@ export class UnlockPage {
                 else if (sucessCode == 400) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Request Failed.',
+                        subTitle: commonString.unlockPage.requestFailed,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -490,7 +494,7 @@ export class UnlockPage {
                 else if (sucessCode == 700) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'User ID not found.',
+                        subTitle: commonString.unlockPage.userIdMsg,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -498,7 +502,7 @@ export class UnlockPage {
                 else {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'connectivity error.',
+                        subTitle: commonString.unlockPage.connectivityErr,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -510,14 +514,13 @@ export class UnlockPage {
                 console.log('error');
             }
         );
-
-
+       } catch (error) { console.log("Error occured"); }
     }
 
     //Mistake API Request
 
-
     mistakeClick() {
+        try{
         this.intervalId.unsubscribe();
         this.loading.present();
         this.intervalId.unsubscribe();
@@ -542,7 +545,7 @@ export class UnlockPage {
                 else if (sucessCode == 100) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Registration key not found on the database.',
+                        subTitle: commonString.unlockPage.errRegistrationKey,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -550,7 +553,7 @@ export class UnlockPage {
                 else if (sucessCode == 400) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Request Failed.',
+                        subTitle: commonString.unlockPage.requestFailed,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -559,7 +562,7 @@ export class UnlockPage {
                 else if (sucessCode == 700) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'User ID not found.',
+                        subTitle: commonString.unlockPage.userIdMsg,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -567,7 +570,7 @@ export class UnlockPage {
                 else {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'connectivity error.',
+                        subTitle: commonString.unlockPage.connectivityErr,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -579,11 +582,12 @@ export class UnlockPage {
 
             }
         );
-
-
+       } catch (error) { console.log("Error occured"); }
     }
 
     timeoutClick() {
+        debugger;
+        try{
         this.intervalId.unsubscribe();
         this.loading.present();
 
@@ -603,12 +607,12 @@ export class UnlockPage {
                             console.log(toast);
                         }
                     );
-                      this.navCtrl.popToRoot();
+                    this.navCtrl.popToRoot();
                 }
                 else if (sucessCode == 100) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Registration key not found on the database.',
+                        subTitle: commonString.unlockPage.errRegistrationKey,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -616,7 +620,7 @@ export class UnlockPage {
                 else if (sucessCode == 400) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'Request Failed.',
+                        subTitle: commonString.unlockPage.requestFailed,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -625,7 +629,7 @@ export class UnlockPage {
                 else if (sucessCode == 700) {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'User ID not found.',
+                        subTitle: commonString.unlockPage.userIdMsg,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -633,7 +637,7 @@ export class UnlockPage {
                 else {
                     this.loading.dismiss();
                     let alert = this.alertCtrl.create({
-                        subTitle: 'connectivity error.',
+                        subTitle: commonString.unlockPage.connectivityErr,
                         buttons: ['Ok']
                     });
                     alert.present();
@@ -646,8 +650,7 @@ export class UnlockPage {
 
             }
         );
-
-
+        } catch (error) { console.log("Error occured"); }
     }
 
     toggleClick() {
@@ -665,4 +668,7 @@ export class UnlockPage {
         this.navCtrl.popToRoot();
     }
 
+
 }
+
+

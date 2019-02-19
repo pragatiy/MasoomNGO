@@ -5,25 +5,24 @@
   Ionic pages and navigation.
 -->
 
-<!--<ion-header>  
- <ion-navbar>
-    <div class="header-text padd-top-0">
-         <ion-title>{{pageHeading}}</ion-title>
-    </div>
-  </ion-navbar>
-</ion-header>-->
 
+
+<!--
+  Generated template for the GeneratePinPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
 <ion-header>
     <ion-navbar hideBackButton>
-        <ion-title class="toolbar-ios-title">
-            <img alt="logo" height="40" src="assets/imgs/a2c-logo.png" (click)="backLogoClick()">
+        <ion-title>
+            <img alt="logo" height="44" src="assets/imgs/a2c-logo.png" (click)="backLogoClick()">
         </ion-title>
         <span class="userIcon" *ngIf="isUserRegister">
             <img alt="logo" height="40" src="assets/imgs/component.png" (click)="userProfileClick()">
         </span>
     </ion-navbar>
 </ion-header>
-
 <ion-content padding class="generatePin">
     <ion-grid class="circlePin">
         <ion-row>
@@ -44,81 +43,25 @@
     <ion-label class="blueHeading">{{pageTitle}}</ion-label>
     <ion-grid class="keyBoard">
         <ion-row>
-            <ion-col>
-                <button text="1" class="unselectable" (click)="btn1Click('1')">1</button>
-            </ion-col>
-            <ion-col>
-                <button text="2" class="unselectable" (click)="btn1Click('2')">2</button>
-            </ion-col>
-            <ion-col>
-                <button text="3" class="unselectable" (click)="btn1Click('3')">3</button>
-            </ion-col>
+            <ion-col><button text="1" class="unselectable" (click)="btn1Click('1')">1</button></ion-col>
+            <ion-col><button text="2" class="unselectable" (click)="btn1Click('2')">2</button></ion-col>
+            <ion-col><button text="3" class="unselectable" (click)="btn1Click('3')">3</button></ion-col>
         </ion-row>
         <ion-row>
-            <ion-col>
-                <button text="4" class="unselectable" (click)="btn1Click('4')">4</button>
-            </ion-col>
-            <ion-col>
-                <button text="5" class="unselectable" (click)="btn1Click('5')">5</button>
-            </ion-col>
-            <ion-col>
-                <button text="6" class="unselectable" (click)="btn1Click('6')">6</button>
-            </ion-col>
+            <ion-col><button text="4" class="unselectable" (click)="btn1Click('4')">4</button></ion-col>
+            <ion-col><button text="5" class="unselectable" (click)="btn1Click('5')">5</button></ion-col>
+            <ion-col><button text="6" class="unselectable" (click)="btn1Click('6')">6</button></ion-col>
         </ion-row>
         <ion-row>
-            <ion-col>
-                <button text="7" class="unselectable" (click)="btn1Click('7')">7</button>
-            </ion-col>
-            <ion-col>
-                <button text="8" class="unselectable" (click)="btn1Click('8')">8</button>
-            </ion-col>
-            <ion-col>
-                <button text="9" class="unselectable" (click)="btn1Click('9')">9</button>
-            </ion-col>
+            <ion-col><button text="7" class="unselectable" (click)="btn1Click('7')">7</button></ion-col>
+            <ion-col><button text="8" class="unselectable" (click)="btn1Click('8')">8</button></ion-col>
+            <ion-col><button text="9" class="unselectable" (click)="btn1Click('9')">9</button></ion-col>
         </ion-row>
         <ion-row>
-            <ion-col>
-                <button class="unselectable" (click)="btn1Click('0')">0</button>
-            </ion-col>
-            <ion-col>
-                <button (click)="btn1Click('delete')">
+            <ion-col><button class="unselectable" (click)="btn1Click('0')">0</button></ion-col>
+            <ion-col><button (click)="btn1Click('delete')">
                     <ion-icon ios="ios-backspace-outline" md="md-backspace"></ion-icon>
-                </button>
-            </ion-col>
+                </button></ion-col>
         </ion-row>
     </ion-grid>
 </ion-content>
-
-
-<!-- <ion-content no-bounce padding class="generatePin">
-    <ion-title>{{pageTitle}}</ion-title> 
-    <ion-grid class="circlePin">
-        <ion-row>
-            <ion-col>  <img src="{{image1}}"></ion-col>
-            <ion-col>  <img src="{{image2}}"></ion-col>
-            <ion-col>  <img src="{{image3}}"></ion-col>
-            <ion-col>  <img src="{{image4}}"></ion-col>
-        </ion-row>
-    </ion-grid>
-    <ion-grid class="keyBoard">
-        <ion-row>
-            <ion-col><button (click) = "btn1Click('1')" text="1" class="unselectable">1</button></ion-col>
-            <ion-col><button text="2" class="unselectable" (click) = "btn1Click('2')">2</button></ion-col>
-            <ion-col><button text="3" class="unselectable"  (click) = "btn1Click('3')">3</button></ion-col>
-        </ion-row>        
-        <ion-row>
-            <ion-col><button text="4" (click) = "btn1Click('4')">4</button></ion-col>
-            <ion-col><button text="5" (click) = "btn1Click('5')">5</button></ion-col>
-            <ion-col><button text="6" (click) = "btn1Click('6')">6</button></ion-col>
-        </ion-row>        
-            <ion-row>
-        <ion-col><button text="7" class="unselectable" (click) = "btn1Click('7')" >7</button></ion-col>
-        <ion-col><button text="8" class="unselectable"  (click) = "btn1Click('8')">8</button></ion-col>
-        <ion-col><button text="9" class="unselectable" (click) = "btn1Click('9')" >9</button></ion-col>
-        </ion-row>        
-         <ion-row>      
-        <ion-col><button (click) = "btn1Click('0')" class="unselectable">0</button></ion-col>
-        <ion-col><button  (click) = "btn1Click('delete')"><ion-icon ios="ios-backspace-outline" md="md-backspace"></ion-icon></button></ion-col>
-        </ion-row>  
-    </ion-grid>  
-</ion-content> -->

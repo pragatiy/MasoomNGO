@@ -1,27 +1,27 @@
-import { Component, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, Navbar } from 'ionic-angular';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { IonicPage, NavController, App, NavParams, LoadingController, AlertController, Navbar } from 'ionic-angular';
 import { A2cApiProvider } from '../../providers/a2c-api/a2c-api';
-import { UserProfilePage } from "../user-profile/user-profile";
-import { Toast } from '@ionic-native/toast';;
+import { Toast } from '@ionic-native/toast';
+import { Observable } from 'rxjs/Rx';
 import * as CryptoJS from 'crypto-js/crypto-js';
 import * as aes from 'aesutil/aes';
-//import * as Aesutill from '../../assets/js/AesUtil'
-
-
+import { commonString } from "../.././app/commonString";
+import { HomePage } from '../home/home';
 /**
  * Generated class for the PasswordPolicyPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+
 declare var AesUtil;
 @IonicPage()
 @Component({
   selector: 'page-password-policy',
   templateUrl: 'password-policy.html',
 })
+
 export class PasswordPolicyPage {
-  @ViewChild('confirmPassword') myInput ;
   @ViewChild(Navbar) navBar: Navbar;
   policyPassword: any;
   flag: number;
@@ -39,30 +39,21 @@ export class PasswordPolicyPage {
   minSymbolcondition: boolean;
   minUpperCasecondition: boolean;
   loading: any;
-  isUserRegister: Boolean = false;
+  encrypPassword: any;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-    public restProvider: A2cApiProvider, public loadingCtrl: LoadingController, private alertCtrl: AlertController,
-    private toast: Toast, private zone: NgZone) {
+  constructor(public navCtrl: NavController, private toast: Toast, public ngzone: NgZone, public navParams: NavParams,
+    public restProvider: A2cApiProvider, public app: App, public loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.loading = this.loadingCtrl.create({
-      content: 'Please wait...'
+      content: commonString.passwordPolicyPage.waitMsg
     });
   }
 
 
-  ionViewWillEnter() {
-
-    let registerUsered = JSON.parse(localStorage.getItem("UserRegisterInfo"));
-    if (registerUsered) {
-      this.isUserRegister = true;
-    } else {
-      this.isUserRegister = false;
-    }
+  backLogoClick() {
+    this.navCtrl.popToRoot();
   }
 
   ionViewDidLoad() {
-
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.navCtrl.popToRoot();
     }
@@ -106,65 +97,32 @@ export class PasswordPolicyPage {
     }
   }
 
-  // Back Button Click
-
-  public backLogoClick() {
-    try {
-      this.navCtrl.popToRoot();
-    } catch (error) {
-      console.log('error');
-    }
-  }
-
-  // User Profile Page
-
-  userProfileClick() {
-    this.navCtrl.push(UserProfilePage);
-    //this.navCtrl.push(UnlockPage);
-  }
-
   checkNewPasswordPolicy() {
     try {
-      debugger;
-      if (this.minLengthcondition == true) {
-        this.validatePasswordlength();
-        if (this.flag == 0) {
-          return;
-        }
+      this.validatePasswordlength();
+      if (this.flag == 0) {
+        return;
       }
-
-      if (this.minNumbercondition == true) {
-        this.validatePassworddigit();
-        if (this.flag == 0) {
-          return;
-        }
+      this.validatePassworddigit();
+      if (this.flag == 0) {
+        return;
       }
-
-      if (this.minUpperCasecondition == true) {
-        this.validatePasswordUppercase();
-        if (this.flag == 0) {
-          return;
-        }
+      this.validatePasswordUppercase();
+      if (this.flag == 0) {
+        return;
       }
-
-      if (this.minLowerCasecondition == true) {
-        this.validatePasswordLowercase();
-        if (this.flag == 0) {
-          return;
-        }
+      this.validatePasswordLowercase();
+      if (this.flag == 0) {
+        return;
       }
-
-      if (this.minSymbolcondition == true) {
-        this.validatePasswordSpecialChar();
-        if (this.flag == 0) {
-          return;
-        }
+      this.validatePasswordSpecialChar();
+      if (this.flag == 0) {
+        return;
       }
     }
     catch (error) {
       console.log('Error' + error);
     }
-
   }
 
   checkPasswordPolicy() {
@@ -174,27 +132,14 @@ export class PasswordPolicyPage {
       if (this.flag == 0) {
         return;
       }
-
       this.validateConfirmPassword();
       if (this.flag == 0) {
         return;
       }
+      this.setPasswordEncrypted(this.ConfirmpolicyPassword);
+      localStorage.setItem('PushFlag', 'RsetPasswordPush');
+      debugger;
 
-
-      let resetPasswordKey = localStorage.getItem('resetPasswordKey');
-
-      // ENCRYPT DATA CODE
-
-      var iv = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
-      var salt = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
-      var aesUtil = new AesUtil(128, 1000);
-      var ciphertext = aesUtil.encrypt(salt, iv, resetPasswordKey, this.policyPassword);
-      var aesPassword = (iv + "::" + salt + "::" + ciphertext);
-      var password = btoa(aesPassword);
-
-      // END 
-
-      localStorage.setItem('policyPassword', password);
       this.loading.present();
       let sessionid = localStorage.getItem('sessionId');
       this.restProvider.resetPasswordYes(sessionid).subscribe(
@@ -202,60 +147,53 @@ export class PasswordPolicyPage {
           let resultObj = JSON.stringify(result);
           let resultData = JSON.parse(resultObj);
           let sucessCode = resultData.Result.SuccessCode;
-
           if (sucessCode == 200) {
-            this.loading.dismiss();
-            localStorage.setItem('sessionId', resultData.Result.sessionId);
 
-            // Extra Code
-            localStorage.setItem('PushFlag', '');
             this.toast.show(`Success`, '500', 'bottom').subscribe(
               toast => {
                 console.log(toast);
               }
             );
-            this.navCtrl.popToRoot();
-            // End
+            this.loading.dismiss();
+            localStorage.setItem('sessionId', resultData.Result.sessionId);
+            this.app.getRootNav().setRoot(HomePage);
+          }
+          else if (resultData.Result.SuccessCode == 100) {
+            this.loading.dismiss();
+            let alert = this.alertCtrl.create({
+              subTitle: commonString.passwordPolicyPage.errRegistrationKey,
+              buttons: ['Ok']
+            });
+            alert.present();
+          } else if (resultData.Result.SuccessCode == 400) {
+            this.loading.dismiss();
 
-          }
-          else if (sucessCode == 100) {
-            this.loading.dismiss();
             let alert = this.alertCtrl.create({
-              subTitle: 'Registration key not found on the database.',
+              subTitle: commonString.passwordPolicyPage.requestFailed,
               buttons: ['Ok']
             });
             alert.present();
-          }
-          else if (sucessCode == 400) {
+          } else if (resultData.Result.SuccessCode == 700) {
             this.loading.dismiss();
             let alert = this.alertCtrl.create({
-              subTitle: 'Request Failed.',
+              subTitle: commonString.passwordPolicyPage.userIdMsg,
               buttons: ['Ok']
             });
             alert.present();
-          }
-          else if (sucessCode == 700) {
+          } else {
             this.loading.dismiss();
             let alert = this.alertCtrl.create({
-              subTitle: 'User ID not found.',
+              subTitle: commonString.passwordPolicyPage.connectivityErr,
               buttons: ['Ok']
             });
             alert.present();
-          }
-          else {
-            this.loading.dismiss();
-            let alert = this.alertCtrl.create({
-              subTitle: 'connectivity error.',
-              buttons: ['Ok']
-            });
-            alert.present();
-            console.log("Sucess data" + JSON.stringify(result));
           }
         },
         (error) => {
-          console.log("error api" + JSON.stringify(error));
-        }
-      );
+          console.log('error api' + JSON.stringify(error));
+        });
+
+
     }
     catch (error) {
       console.log('Error' + error);
@@ -263,13 +201,11 @@ export class PasswordPolicyPage {
 
   }
 
-
   // Validate Password Length
 
   validatePasswordlength() {
-    debugger;
     if (this.policyPassword.length < this.minLength) {
-      this.errorPasswordLength = 'Password must be ' + this.minLength + ' character long';
+      this.errorPasswordLength = commonString.passwordPolicyPage.passwordErr + this.minLength + commonString.passwordPolicyPage.charlong;
       this.flag = 0;
     } else {
       this.errorPasswordLength = '';
@@ -279,10 +215,9 @@ export class PasswordPolicyPage {
   // Validate Password Digit
 
   validatePassworddigit() {
-
     let digitlength = this.policyPassword.replace(/[^0-9]/g, "").length;
     if ((!/\d/.test(this.policyPassword)) || (digitlength < this.minNumber)) {
-      this.errorPasswordLength = 'Password must contain atleast ' + this.minNumber + ' digit';
+      this.errorPasswordLength = commonString.passwordPolicyPage.passAtleast + this.minNumber + ' digit';
       this.flag = 0;
     } else {
       this.errorPasswordLength = '';
@@ -295,13 +230,12 @@ export class PasswordPolicyPage {
   validatePasswordUppercase() {
     let uppercaselength = this.policyPassword.replace(/[^A-Z]/g, "").length;
     if ((!/[A-Z]/.test(this.policyPassword)) || (uppercaselength < this.minUpperCase)) {
-      this.errorPasswordLength = 'Password must contain atleast ' + this.minUpperCase + ' Upper Case';
+      this.errorPasswordLength = commonString.passwordPolicyPage.passAtleast + this.minUpperCase + ' Upper Case';
       this.flag = 0;
     } else {
       this.errorPasswordLength = '';
       this.flag = 1;
     }
-
   }
 
   // Validate Password Lower Case 
@@ -310,7 +244,7 @@ export class PasswordPolicyPage {
     debugger;
     let lowercaselength = this.policyPassword.replace(/[^a-z]/g, "").length;
     if ((!/[a-z]/.test(this.policyPassword)) || (lowercaselength < this.minLowerCase)) {
-      this.errorPasswordLength = 'Password must contain atleast ' + this.minLowerCase + ' Lower Case';
+      this.errorPasswordLength = commonString.passwordPolicyPage.passAtleast + this.minLowerCase + ' Lower Case';
       this.flag = 0;
     } else {
       this.errorPasswordLength = '';
@@ -321,10 +255,9 @@ export class PasswordPolicyPage {
   // Validate Password Special Character 
 
   validatePasswordSpecialChar() {
-
     let specialcharlength = this.policyPassword.replace(/[^-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/g, "").length;
     if ((!/[-!$%^&*()_+|~=`{}\[\]:\/;<>?,.@#]/.test(this.policyPassword)) || (specialcharlength < this.minSymbol)) {
-      this.errorPasswordLength = 'Password must contain atleast ' + this.minSymbol + ' Special Character';
+      this.errorPasswordLength = commonString.passwordPolicyPage.passAtleast + this.minSymbol + ' Special Character';
       this.flag = 0;
     } else {
       this.errorPasswordLength = '';
@@ -335,9 +268,8 @@ export class PasswordPolicyPage {
   //Validate Confirm Password
 
   validateConfirmPassword() {
-
     if (this.policyPassword != this.ConfirmpolicyPassword) {
-      this.errorConfirmPassword = 'Password do not match!';
+      this.errorConfirmPassword =  commonString.passwordPolicyPage.passnotMatch;
       this.flag = 0;
     }
     else {
@@ -347,30 +279,24 @@ export class PasswordPolicyPage {
   }
 
   onKeyPassworldLength(event) {
-    debugger;
-    console.log(event.keyCode)
-    if (event.keyCode != "13") {
-      this.zone.run(() => {
-        if (this.policyPassword == '') {
-          this.errorPasswordLength = '';
-        }
-        else {
-          this.checkNewPasswordPolicy();
-        }
-      });
-    } else {
-      this.myInput.setFocus();
-    }
+    this.ngzone.run(() => {
+      if (this.policyPassword == '') {
+        this.errorPasswordLength = '';
+      }
+      else {
+        this.checkNewPasswordPolicy();
+      }
+    });
   }
 
   onKeyConfirmPassworldLength(event) {
-    this.zone.run(() => {
+    this.ngzone.run(() => {
       if (this.ConfirmpolicyPassword == '') {
         this.errorConfirmPassword = '';
       }
       else {
         if (this.policyPassword != this.ConfirmpolicyPassword) {
-          this.errorConfirmPassword = 'Password do not match!';
+          this.errorConfirmPassword = commonString.passwordPolicyPage.passnotMatch;
           this.flag = 0;
         }
         else {
@@ -381,8 +307,31 @@ export class PasswordPolicyPage {
     });
   }
 
+
+  public setPasswordEncrypted(password): void {
+    debugger;
+    // Encrypt 
+    let secretKey = localStorage.getItem('resetPassKey')
+    var iv = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
+    var salt = CryptoJS.lib.WordArray.random(128 / 8).toString(CryptoJS.enc.Hex);
+    var aesUtil = new AesUtil(128, 1000);
+    var ciphertext = aesUtil.encrypt(salt, iv, secretKey, password);
+    var aesPassword = (iv + "::" + salt + "::" + ciphertext);
+    this.encrypPassword = btoa(aesPassword);
+    localStorage.setItem('policyPassword', this.encrypPassword);
+    console.log('encrypt pass' + this.encrypPassword);
+
+  }
+
+
   //Cancel Button 
   CancelButton() {
     this.navCtrl.popToRoot();
+
   }
+
+
 }
+
+
+

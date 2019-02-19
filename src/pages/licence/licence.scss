@@ -1,24 +1,29 @@
 page-licence {  
     .delAccBtn{
-
-        
         margin: auto;
-        border: 1px solid #A4DACC; 
-                            color: #000;
-                            background-color: #A8BCC9;
-                            border-radius: 0;
-                            height: 34px;
-                            font-size: 1.1em;
-                            float: right;
     }
-	
-	.redClass{
-		color: red;
+      
+
+    .class1{
+        display:none;
     }
-    
-    .btnBox {
+    .class2{
+        display: block;
+    }
+    .transBtn{
+        color: #427feb;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+    }
+    .toolbar-title, .back-button-icon{
+        color: #fff !important; 
+    }
+
+     .btnBox {
         text-align: center;
         padding: 20px;
+        /*position: absolute;*/
         width: 100%;
         bottom: 0;
         left: 0;
@@ -39,42 +44,4 @@ page-licence {
             font-weight: bold;
         }
     }
-
-
-    .header-text{
-        ion-title{
-            width: calc(100% - 52px);
-            color: #ffF;
-            text-align: center;
-            .toolbar-title{
-                color: #fff;
-                padding-top: 10px;
-            }
-        }
-
-    }
-
-    .class1{
-        display:none;
-    }
-    .class2{
-        display: block;
-    }
-    .transBtn{
-        color: #427feb;
-        background: transparent;
-        box-shadow: none;
-        padding: 0;
-    }
-    .toolbar-title, .back-button-icon{
-        color: #fff !important; 
-    }
-}
-
-@media screen and (max-width: 320px){
-    page-licence .btnBox .appBtn{
-        padding: 10px 5px;
-        margin: 0 10px;
-    }
-   
 }

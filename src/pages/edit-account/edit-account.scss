@@ -1,26 +1,13 @@
 page-edit-account {
-    .btn-color {
-        border: 1px solid #8cc63f;
-        color: #000;
-        background-color: #A8BCC9;
-        border-radius: 0;
-        height: 45px;
-        
-    }
-    .delAccBtn {
-       
-        margin-left: 70px;
-    }
+
+   
+
     .content {
-        .scroll-content{
-            padding: 5px !important;
-        }
-        
         background-color: #D6E8ED;
         .mainBox {
             .greenBox {
-                border: 1px solid #8cc63f; //  padding: 10px;
-                padding: 10px;
+                border: 1px solid #8cc63f;
+               padding: 10px;
                 background: #F0F7F2;
                 .iconHeader {
                     display: inline-block;
@@ -29,9 +16,7 @@ page-edit-account {
                         float: left;
                     }
                     .headingBox {
-                        text-align: left;
-                        margin: 20px 0;
-                        padding-left: 30px;
+                        text-align: center;
                     }
                 }
                 .headingBox {
@@ -56,14 +41,15 @@ page-edit-account {
                     .input-wrapper {
                         display: block;
                         .borderInput {
-                            border-bottom: 1px solid #F58438; //margin-bottom: 45px;
+                            border-bottom: 1px solid #F58438;
                             display: inline-block;
                             width: 100%;
                             .text-input {
                                 margin: 0;
                                 padding: 5px;
-                                .white-border {
+                                .white-border{
                                     border: transparent
+
                                 }
                             }
                         }
@@ -73,6 +59,7 @@ page-edit-account {
                         box-shadow: none !important;
                     }
                 }
+
                 .imgBox {
                     position: relative;
                     padding: 0;
@@ -109,28 +96,9 @@ page-edit-account {
                         box-shadow: 0 0 2px #000;
                     }
                 }
-                .upFormBox {
 
+                .upFormBox {
                     padding: 25px;
-                    .rescanBox{
-                        position: relative;
-                        .rescanBtn{
-                            position: absolute !important;
-                            right: 5px;
-                            top: 12px;
-                            padding: 0;
-                            .btn-color{
-                                border: 1px solid #8cc63f;
-                                color: #000;
-                                background-color: #A8BCC9;
-                                border-radius: 0;
-                                height: 35px;
-                                padding: 10px;
-                                font-size: 1.5rem;
-                                margin: 0;
-                            }
-                        }
-                    }
                     .label {
                         color: #192942;
                         font-size: 16px;
@@ -146,20 +114,23 @@ page-edit-account {
                         .text-input {
                             margin: 0;
                             padding: 5px;
-                            .white-border {
+                            .white-border{
                                 border: transparent
+
                             }
                         }
                     }
-                    .toggleBtn {
-                        .toggle {
-                            width: 78px;
-                            height: 27px;
-                            .toggle-icon {
-                                background-color: #A8BCC9;
+                    .toggleBtn{
+                        padding: 0;
+                        .toggle{
+                            width: 74px;
+                            height: 26px;
+                            padding: 0;
+                            .toggle-icon{
+                                background-color: #D6E8ED;
                                 border-radius: 0;
                                 border: 1px solid #A8BCC9;
-                                .toggle-inner {
+                                .toggle-inner{
                                     background-color: #A8BCC9;
                                     border: 1px solid #E2F2E8;
                                     width: 36px;
@@ -170,24 +141,25 @@ page-edit-account {
                                     box-shadow: none;
                                 }
                             }
-                            .toggle-icon:before {
+                            .toggle-icon:before{
                                 transform: initial;
                                 border-radius: 0;
                             }
                         }
                         .toggle.toggle-checked {
-                            .toggle-icon {
-                                .toggle-inner {
+                            .toggle-icon{
+                                /*background-color: #D6E8ED;*/
+                                .toggle-inner{
                                     left: 19px;
                                     box-shadow: none;
                                     background-color: #8CC63F;
                                 }
                             }
-                            .toggle-icon:before {
+                            .toggle-icon:before{
                                 transform: initial;
                                 border-radius: 0;
                             }
-                        }
+                        }                   
                     }
                 }
             }
@@ -217,114 +189,184 @@ page-edit-account {
             }
         }
     }
+
+
+
+    
+
     .item-input ion-label {
         max-width: 100% !important;
     }
+
     .hideClass {
         display: none;
     }
+    
     .errorclass {
         margin: 0px 20px !important;
         color: red !important;
-    } //     .imgclass {
-    //         margin: auto;
-    //     }
-    //     .updateclass {
-    //         padding: 25px;
-    //     }
-    //     .errorclass {
-    //         color: red;
-    //     }
-    //     .col-center {
-    //         margin-left: 65px;
-    //     }
-    //     .btn-color {
-    // background-color: #192740 !important;
-    //     }
-    //     .proClass {
-    // color: #968a8a !important;
-    //     }
-    //     .addImageForm {
-    //         .imgBox {
-    //             position: relative;
-    //             	.imgclass {
-    //                 text-align: center;
-    // 				width: 120px;
-    // 				flex: 0 0 120px;
-    // 				position: relative !important;
-    // 				padding: 0;
-    // 				height: 100px;
-    //                 margin: auto;
-    //                 img{
-    //                     height: 100px;
-    //                     width: 100px;
-    //                 }
-    //             }
-    //             .imgEdit {
-    //                 position: absolute;
-    //                 left: auto;
-    //                 right: 10px;
-    //                 bottom: 8px;
-    //                 padding: 2px;
-    //                 margin: auto;
-    //                 width: 20px;
-    //                 height: 20px;
-    //                 background: #fff;
-    //                 border-radius: 50%;
-    //                 text-align: center;
-    //                 border: 1px solid #fff;
-    //                 box-shadow: 0 0 2px #000;
-    //             }						
-    //         }
-    //         .label-md {
-    //             color: #000;
-    //         }
-    //         .input-md {
-    //             font-size: 1.4rem;
-    //         }
-    //         .toggleBtn {
-    //             padding: 0;
-    //             float: right; 
-    //             .toggle {
-    //                 padding: 12px 0;
-    //             }
-    //         }
-    //     }
-    //     .image-box {
-    //         display: inline-block;
-    //         border: 1px solid #eee;
-    //         border-radius: 3px;
-    //         margin: auto;
-    //     }
-    //     .img {
-    //         height: 70px;
-    //         width: auto;
-    //         margin: auto;
-    //         display: block;
-    //     }
-    //     .errorclass {
-    //         color: red !important;
-    //         margin-left: 14px;
-    //     }
-    //     .btn-color {
-    //         background-color: #192740 !important;
-    //     }
-    //     .delAccBtn {
-    //         margin: auto;
-    //     }
-    //     .pull-right {
-    //         float: right !important;
-    //     }
+    }
+
+    .btn-color{
+    /* background-color: #4e5f99 !important; */
+       background-color: #A8BCC9 !important;
+    }  
+    
+
+ .delAccBtn{
+       margin: auto;
+       color:black;
+       margin-top: 30px;
+       margin-bottom: 0px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// inner class
+
+   /*  .imgclass{
+            margin: auto;
+    }
+    
+    .updateclass{
+        padding: 25px;
+    }
+    
+    .errorclass{color:red;}
+    .col-center{margin-left: 65px;}
+    
+    .btn-color{    
+    background-color: #192740 !important;
+    }  
+    
+    .proClass{color:#968a8a !important;}
+    
+    
+    .addImageForm{
+        .imgBox{
+            position: relative;
+
+            .imgclass {
+                text-align: center;
+                width: 120px;
+                flex: 0 0 120px;
+                position: relative !important;
+                padding: 0;
+                height: 100px;
+                margin: auto;
+                img{
+                    height: 100px;
+                    width: 100px;
+               }
+            }
+
+            .imgEdit {
+                position: absolute;
+                left: auto;
+                right: 10px;
+                bottom: 8px;
+                padding: 2px;
+                margin: auto;
+                width: 20px;
+                height: 20px;
+                background: #fff;
+                border-radius: 50%;
+                text-align: center;
+                border: 1px solid #fff;
+                box-shadow: 0 0 2px #000
+            }   
+
+
+          
+        }
+        .label-md{
+            color: #000;
+        }
+        .input-md{
+            font-size: 1.4rem;
+        }
+        .toggleBtn{
+            padding: 0;
+            float: right;
+            .toggle{
+                padding: 12px 0;
+            }
+        }
+    }
+    
+    
+    .image-box{
+        display: inline-block;
+        border: 1px solid #eee;
+        border-radius: 3px;
+        margin: auto;
+    }
+    .img{
+      height: 70px;
+      width: auto;
+      margin: auto;
+      display: block;
+    }
+
+    .errorclass{
+        color:red !important;
+        margin-left: 0;
+    }
+
+    .btn-color{
+   
+        background-color: #192740 !important;
+    }  
+    .delAccBtn{
+       margin: auto;
+    } */
+    
+
+
+
 }
 
-// body{
-// position:fixed;
-// height: calc(100vh);
-// }
-// html{
-// overflow:hidden;
-// position:fixed;
-// }
-// .scroll-content{
-//     padding: 10px !important;
-// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//outer of the class
+.pr-0{
+    padding-right: 0 !important;
+}
+.pl-0{
+    padding-left: 0 !important;
+}
+.pull-right{
+     float: right !important;
+     bottom: 72px !important;
+   /*   left: 25px !important; */
+     color: black !important;    
+     text-transform: capitalize;
+}
+
+.bar-button-default-md, .bar-button-clear-md-default, .bar-button-md-default{color: white !important;}
+
+.scroll-content{
+    padding: 10px !important;
+}

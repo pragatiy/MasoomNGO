@@ -4,32 +4,27 @@ import { Injectable } from '@angular/core';
 import { Config } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
-/*
-  Generated class for the A2cApiProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
+
 @Injectable()
 export class A2cApiProvider {
-    apiUrlA2c; any;
-    resetpasswordpush: any;
+    apiUrlA2c: any;
+    apiRequest: any;
+    newPassword: any;
+    newResponseUrl: any;
     constructor(public plt: Platform, public http: HttpClient, public config: Config) {
-       // this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/';
+        console.log('Hello A2cApiProvider Provider');
     }
 
     resetPassword(): Observable<any> {
+        //   alert('confirm user');
         debugger;
         let token = localStorage.getItem("token");
+        console.log(token);
+        this.newPassword = localStorage.getItem('policyPassword');
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-        console.log('user info in provider',userRegisterInfo);
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/confirmuser';
-        }
         console.log(ResultData.sessionId);
         let mobiledataRequest = {
             ADUserID: ResultData.userName,
@@ -38,66 +33,76 @@ export class A2cApiProvider {
             companyname: ResultData.companyname,
             button: "reset"
         }
-        
+        console.log('new response url', this.apiUrlA2c);
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/confirmuserdroid';
+        }
+        console.log('new response url with company name  ', this.newResponseUrl);
         let httpheaders = new HttpHeaders();
-        var clientConfirmData = new FormData();
-        console.log(clientConfirmData);
-     //   alert(clientConfirmData);
+        var clientConfirmData: any;
+        clientConfirmData = new FormData();
         clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
         clientConfirmData.append("SessionId", ResultData.sessionId);
+
         httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
-      // return this.http.post('https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.CN + '/mobile-api/confirmuserdroid',
+        //httpheaders.append('Content-Type','application/json'); 
+        return this.http.post(this.newResponseUrl,
             clientConfirmData, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
-
     }
 
-    // Reset Password Yes Event
+    //Reset Password Yes Event
 
     resetPasswordYes(sessionid) {
-     debugger;
-        let policyPassword =  localStorage.getItem('policyPassword');
-    
+        debugger;
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+        this.newPassword = localStorage.getItem('policyPassword');
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/resetpasswordios';
-        }
         let mobiledataRequest = {
             EventAction: "YES",
             Username: ResultData.userName,
-            Password: policyPassword,
-            ConfirmPassword: policyPassword
+            Password: this.newPassword,
+            ConfirmPassword: this.newPassword
         }
-
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/resetpasswordandroid';
+        }
         let httpheaders = new HttpHeaders();
         var clientConfirmData = new FormData();
         clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
         clientConfirmData.append("SessionId", sessionid);
+        console.log('form data ', clientConfirmData);
+        for (let key in clientConfirmData) {
+            console.log(key);
+        }
         httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-      return this.http.post(this.apiUrlA2c,
+        //httpheaders.append('Content-Type','application/json'); 
+        return this.http.post(this.newResponseUrl,
             clientConfirmData, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
     }
 
-    // Unlock user Account
+
+    //confirm user for unlock Account
 
     unlockAccount(): Observable<any> {
+        debugger;
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let token = localStorage.getItem("token");
+        console.log(token);
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/confirmuser';
-        }
+        // alert(ResultData.sessionId);
+        console.log(ResultData.sessionId);
         let mobiledataRequest = {
             ADUserID: ResultData.userName,
             Username: ResultData.userName,
@@ -105,390 +110,466 @@ export class A2cApiProvider {
             companyname: ResultData.companyname,
             button: "unlock"
         }
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/confirmuserdroid';
+        }
         let httpheaders = new HttpHeaders();
         var clientConfirmData = new FormData();
         clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
         clientConfirmData.append("SessionId", ResultData.sessionId);
+        console.log('form data ', clientConfirmData);
+        for (let key in clientConfirmData) {
+            console.log(key);
+        }
         httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
+        //httpheaders.append('Content-Type','application/json'); 
+        return this.http.post(this.newResponseUrl,
             clientConfirmData, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
 
     }
 
-    //Call Api for Unlock Account
+    //end
 
+    //Call Api for Unlock Account
     unlockAccountYes(sessionid) {
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/unlockaccount';
-        }
+
         let mobiledataRequest = {
             EventAction: "YES",
             Company: ResultData.companyname,
             Username: ResultData.userName
         }
+
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/unlockaccountdroid';
+        }
+
         let httpheaders = new HttpHeaders();
         var clientConfirmData = new FormData();
         clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
         clientConfirmData.append("SessionId", sessionid);
+        console.log('form data ', clientConfirmData);
+        for (let key in clientConfirmData) {
+            console.log(key);
+        }
         httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
+        //httpheaders.append('Content-Type','application/json'); 
+        return this.http.post(this.newResponseUrl,
             clientConfirmData, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
 
     }
 
-    // Resend Notification Request API
-
+    //Resend Notification Request API
     resendNotification(sessionid) {
+        debugger;
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = this.apiUrlA2c + ResultData.CN + '/mobile-api/resetpasswordpush';
-        }
+
         let mobiledataRequest = {
             Username: ResultData.userName,
             EventAction: "RESEND"
         }
+
+
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/resetpasswordandroid';
+        }
         let httpheaders = new HttpHeaders();
         var clientConfirmData = new FormData();
         clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
         clientConfirmData.append("SessionId", sessionid);
+        console.log('form data ', clientConfirmData);
+        for (let key in clientConfirmData) {
+            console.log(key);
+        }
         httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
+        //httpheaders.append('Content-Type','application/json'); 
+        return this.http.post(this.newResponseUrl,
             clientConfirmData, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
+
+
     }
 
-    // Push to Phone Notification Request
-
+    //Push to Phone Notification Request
     pushToPhoneYes() {
+        debugger;
+        //    alert('push to phone');
+        this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
         let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
         let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/getpushresponse';
-        }
+
         let mobiledataRequest = {
             EventAction: "YES",
             Company: ResultData.companyname,
             Username: ResultData.userName
         }
+
+        let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+        if (dataResponseUrl) {
+            this.newResponseUrl = dataResponseUrl;
+        } else {
+            this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/getpushresponsedroid';
+        }
+
         let httpheaders = new HttpHeaders();
-       // var clientConfirmData = new FormData();
-       // clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-        //httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
         httpheaders.append('Content-Type', 'application/json');
-        return this.http.post(this.apiUrlA2c,
+        return this.http.post(this.newResponseUrl,
             mobiledataRequest, { headers: httpheaders })
             .map(this.getDataSuccess)
             .catch(this.getDataError);
+
     }
 
-   
+    // timeout API call 
+    timeoutRequest(sessionid, PushFlag) {
+
+        if (PushFlag == "RsetPasswordPush") {
+            debugger;
+            this.apiRequest = "resetpasswordandroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
+
+            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+            let ResultData = JSON.parse(userRegisterInfo);
+
+            let mobiledataRequest = {
+                Company: ResultData.companyname,
+                EventAction: "NO",
+                Username: ResultData.userName,
+                Reason: "TimedOut"
+            }
+
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
+            }
+
+            let httpheaders = new HttpHeaders();
+            var clientConfirmData = new FormData();
+            clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
+            clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
+            httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+            return this.http.post(this.newResponseUrl,
+                clientConfirmData, { headers: httpheaders })
+                .map(this.getDataSuccess)
+                .catch(this.getDataError);
+        }
+        else if (PushFlag == "UnlockAccountPush") {
+            debugger;
+            this.apiRequest = "unlockaccountdroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
+
+            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+            let ResultData = JSON.parse(userRegisterInfo);
+
+            let mobiledataRequest = {
+                Company: ResultData.companyname,
+                EventAction: "NO",
+                Username: ResultData.userName,
+                Reason: "TimedOut"
+            }
+
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
+            }
+
+            let httpheaders = new HttpHeaders();
+            var clientConfirmData = new FormData();
+            clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
+            clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
+            httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
+
+            return this.http.post(this.newResponseUrl,
+                clientConfirmData, { headers: httpheaders })
+                .map(this.getDataSuccess)
+                .catch(this.getDataError);
+        }
+        else {
+
+            debugger;
+            this.apiRequest = "getpushresponsedroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
+            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+            let ResultData = JSON.parse(userRegisterInfo);
+            let mobiledataRequest = {
+                Company: ResultData.companyname,
+                EventAction: "NO",
+                Username: ResultData.userName,
+                Reason: "TimedOut"
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
+            }
+            let httpheaders = new HttpHeaders();
+            httpheaders.append('Content-Type', 'application/json');
+            return this.http.post(this.newResponseUrl,
+                mobiledataRequest, { headers: httpheaders })
+                .map(this.getDataSuccess)
+                .catch(this.getDataError);
+        }
+
+        //alert(this.apiRequest);
+
+
+    }
+
+
 
     // Fraud API call
-
-    fraudRequest(sessionid, PageName) {
-        if (PageName == "RsetPasswordPush") {
-          //  this.resetpasswordpush = "resetpasswordpush";
-            this.resetpasswordpush = "resetpasswordpush";
+    fraudRequest(sessionid, PushFlag) {
+        if (PushFlag == "RsetPasswordPush") {
+            debugger;
+            this.apiRequest = "resetpasswordandroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
             let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
             let ResultData = JSON.parse(userRegisterInfo);
-            let newApiUrl = localStorage.getItem('dataResponseUrl');
-            if((newApiUrl != '') && (newApiUrl != undefined)){
-                this.apiUrlA2c = newApiUrl;
-            } else{
-                this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-            }
             let mobiledataRequest = {
-                EventAction: "NO",
                 Company: ResultData.companyname,
+                EventAction: "NO",
                 Username: ResultData.userName,
                 Reason: "Fraud"
+
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
             }
             let httpheaders = new HttpHeaders();
             var clientConfirmData = new FormData();
             clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
             clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
             httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-            return this.http.post(this.apiUrlA2c,
+            return this.http.post(this.newResponseUrl,
                 clientConfirmData, { headers: httpheaders })
                 .map(this.getDataSuccess)
                 .catch(this.getDataError);
         }
-        else if (PageName == "UnlockAccountPush") {
-           // this.resetpasswordpush = "unlockaccount";
-            this.resetpasswordpush = "resetpasswordpush";
+        else if (PushFlag == "UnlockAccountPush") {
+            debugger;
+            this.apiRequest = "unlockaccountdroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
             let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
             let ResultData = JSON.parse(userRegisterInfo);
-            let newApiUrl = localStorage.getItem('dataResponseUrl');
-            if((newApiUrl != '') && (newApiUrl != undefined)){
-                this.apiUrlA2c = newApiUrl;
-            } else{
-                this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-            }
             let mobiledataRequest = {
-                EventAction: "NO",
                 Company: ResultData.companyname,
+                EventAction: "NO",
                 Username: ResultData.userName,
                 Reason: "Fraud"
+
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
             }
             let httpheaders = new HttpHeaders();
             var clientConfirmData = new FormData();
             clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
             clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
             httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-            return this.http.post(this.apiUrlA2c,
+            return this.http.post(this.newResponseUrl,
                 clientConfirmData, { headers: httpheaders })
                 .map(this.getDataSuccess)
                 .catch(this.getDataError);
         }
         else {
-           // this. pushToPhoneYesfraud(sessionid, PageName);
-           // this.resetpasswordpush = "getpushresponse";
-           this.resetpasswordpush = "getpushresponse";
-           let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-           let ResultData = JSON.parse(userRegisterInfo);
-           let newApiUrl = localStorage.getItem('dataResponseUrl');
-           if((newApiUrl != '') && (newApiUrl != undefined)){
-               this.apiUrlA2c = newApiUrl;
-           } else{
-               this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-           }
-           let mobiledataRequest = {
-               EventAction: "NO",
-               Company: ResultData.companyname,
-               Username: ResultData.userName,
-               Reason: "Fraud"
-           }
-           let httpheaders = new HttpHeaders();
-           // var clientConfirmData = new FormData();
-           // clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-           // clientConfirmData.append("SessionId", sessionid);
-           httpheaders.append('Content-Type', 'application/json');
-           return this.http.post(this.apiUrlA2c,
-               mobiledataRequest, { headers: httpheaders })
-               .map(this.getDataSuccess)
-               .catch(this.getDataError);
+
+            debugger;
+            this.apiRequest = "getpushresponsedroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
+            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+            let ResultData = JSON.parse(userRegisterInfo);
+            let mobiledataRequest = {
+                Company: ResultData.companyname,
+                EventAction: "NO",
+                Username: ResultData.userName,
+                Reason: "Fraud"
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
+            }
+            let httpheaders = new HttpHeaders();
+            httpheaders.append('Content-Type', 'application/josn');
+            return this.http.post(this.newResponseUrl,
+                mobiledataRequest, { headers: httpheaders })
+                .map(this.getDataSuccess)
+                .catch(this.getDataError);
         }
-       
+
     }
 
 
-   
+
 
     // Mistake API call
+    mistakeRequest(sessionid, PushFlag) {
 
-    mistakeRequest(sessionid, PageName) {
-        if (PageName == "RsetPasswordPush") {
-            this.resetpasswordpush = "resetpasswordpush";
-            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-        let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-        }
-        
-        let mobiledataRequest = {
-            EventAction: "NO",
-            Username: ResultData.userName,
-            Company: ResultData.companyname,
-            Reason: "Mistake"
-        }
-        let httpheaders = new HttpHeaders();
-        var clientConfirmData = new FormData();
-        clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-        clientConfirmData.append("SessionId", sessionid);
-        httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
-            clientConfirmData, { headers: httpheaders })
-            .map(this.getDataSuccess)
-            .catch(this.getDataError);
-        }
-        else if (PageName == "UnlockAccountPush") {
-            this.resetpasswordpush = "unlockaccount";
-            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-        let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-        }
-        
-        let mobiledataRequest = {
-            EventAction: "NO",
-            Username: ResultData.userName,
-            Company: ResultData.companyname,
-            Reason: "Mistake"
-        }
-        let httpheaders = new HttpHeaders();
-        var clientConfirmData = new FormData();
-        clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-        clientConfirmData.append("SessionId", sessionid);
-        httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-        return this.http.post(this.apiUrlA2c,
-            clientConfirmData, { headers: httpheaders })
-            .map(this.getDataSuccess)
-            .catch(this.getDataError);
-        }
-        else {
-           // this.resetpasswordpush = "getpushresponse";
-        //   this.pushToPhoneYesMistake(sessionid, PageName)
-           this.resetpasswordpush = "getpushresponse";
-        let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-        let ResultData = JSON.parse(userRegisterInfo);
-        let newApiUrl = localStorage.getItem('dataResponseUrl');
-        if((newApiUrl != '') && (newApiUrl != undefined)){
-            this.apiUrlA2c = newApiUrl;
-        } else{
-            this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-        }
-        let mobiledataRequest = {
-            EventAction: "NO",
-            Company: ResultData.companyname,
-            Username: ResultData.userName,
-            Reason: "Mistake"
-        }
-        let httpheaders = new HttpHeaders();
-        // var clientConfirmData = new FormData();
-        // clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-        // clientConfirmData.append("SessionId", sessionid);
-        httpheaders.append('Content-Type', 'application/json');
-        return this.http.post(this.apiUrlA2c,
-            mobiledataRequest, { headers: httpheaders })
-            .map(this.getDataSuccess)
-            .catch(this.getDataError);
-        }
-        
-    }
-
-
-
- 
-    // Time out API call
-
-    timeoutRequest(sessionid, PageName) {
-        if (PageName == "RsetPasswordPush") {
-            this.resetpasswordpush = "resetpasswordpush";
+        if (PushFlag == "RsetPasswordPush") {
+            debugger;
+            this.apiRequest = "resetpasswordandroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
             let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
             let ResultData = JSON.parse(userRegisterInfo);
-            let newApiUrl = localStorage.getItem('dataResponseUrl');
-            if((newApiUrl != '') && (newApiUrl != undefined)){
-                this.apiUrlA2c = newApiUrl;
-            } else{
-                this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-            }
             let mobiledataRequest = {
+                Company: ResultData.companyname,
                 EventAction: "NO",
                 Username: ResultData.userName,
-                Company: ResultData.companyname,
-                Reason: "TimedOut"
+                Reason: "Mistake"
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
             }
             let httpheaders = new HttpHeaders();
             var clientConfirmData = new FormData();
             clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
             clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
             httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-            return this.http.post(this.apiUrlA2c,
+            return this.http.post(this.newResponseUrl,
                 clientConfirmData, { headers: httpheaders })
                 .map(this.getDataSuccess)
                 .catch(this.getDataError);
         }
-        else if (PageName == "UnlockAccountPush") {
-            this.resetpasswordpush = "unlockaccount";
+        else if (PushFlag == "UnlockAccountPush") {
+            debugger;
+            this.apiRequest = "unlockaccountdroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
             let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
             let ResultData = JSON.parse(userRegisterInfo);
-            let newApiUrl = localStorage.getItem('dataResponseUrl');
-            if((newApiUrl != '') && (newApiUrl != undefined)){
-                this.apiUrlA2c = newApiUrl;
-            } else{
-                this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-            }
             let mobiledataRequest = {
+                Company: ResultData.companyname,
                 EventAction: "NO",
                 Username: ResultData.userName,
-                Company: ResultData.companyname,
-                Reason: "TimedOut"
+                Reason: "Mistake"
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
             }
             let httpheaders = new HttpHeaders();
             var clientConfirmData = new FormData();
             clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
             clientConfirmData.append("SessionId", sessionid);
+            console.log('form data ', clientConfirmData);
+            for (let key in clientConfirmData) {
+                console.log(key);
+            }
             httpheaders.append('Content-Type', 'application/x-www-form-urlencoded');
-            return this.http.post(this.apiUrlA2c,
+            return this.http.post(this.newResponseUrl,
                 clientConfirmData, { headers: httpheaders })
                 .map(this.getDataSuccess)
                 .catch(this.getDataError);
         }
         else {
-            //this.resetpasswordpush = "getpushresponse";
-           // this.pushToPhoneYesTiomeout(sessionid, PageName)
-           this.resetpasswordpush = "getpushresponse";
 
-           let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
-           let ResultData = JSON.parse(userRegisterInfo);
-           let newApiUrl = localStorage.getItem('dataResponseUrl');
-           if((newApiUrl != '') && (newApiUrl != undefined)){
-               this.apiUrlA2c = newApiUrl;
-           } else{
-               this.apiUrlA2c = 'https://' + localStorage.getItem("apiUrlA2c") + '/a2c/' + ResultData.companyname + '/mobile-api/' + this.resetpasswordpush;
-           }
-           let mobiledataRequest = {
-               EventAction: "NO",
-               Company: ResultData.companyname,
-               Username: ResultData.userName,
-               Reason: "TimedOut"
-           }
-           let httpheaders = new HttpHeaders();
-           // var clientConfirmData = new FormData();
-           // clientConfirmData.append("mobiledata", JSON.stringify(mobiledataRequest));
-           // clientConfirmData.append("SessionId", sessionid);
-           httpheaders.append('Content-Type', 'application/json');
-           return this.http.post(this.apiUrlA2c,
-               mobiledataRequest, { headers: httpheaders })
-               .map(this.getDataSuccess)
-               .catch(this.getDataError);
-       
+            debugger;
+            console.log('mistake req push to phone ');
+            this.apiRequest = "getpushresponsedroid";
+            this.apiUrlA2c = localStorage.getItem("apiUrlA2c");
+            let userRegisterInfo = localStorage.getItem("UserRegisterInfo");
+            let ResultData = JSON.parse(userRegisterInfo);
+            let mobiledataRequest = {
+                Company: ResultData.companyname,
+                EventAction: "NO",
+                Username: ResultData.userName,
+                Reason: "Mistake"
+
+            }
+            let dataResponseUrl = localStorage.getItem('dataResponseUrl');
+            if (dataResponseUrl) {
+                this.newResponseUrl = dataResponseUrl;
+            } else {
+                this.newResponseUrl = this.apiUrlA2c + ResultData.companyname + '/mobile-api/' + this.apiRequest;
+            }
+            let httpheaders = new HttpHeaders();
+
+            debugger;
+            console.log('mistake req data ', mobiledataRequest);
+            httpheaders.append('Content-Type', 'application/json');
+            return this.http.post(this.newResponseUrl,
+                mobiledataRequest, { headers: httpheaders })
+                .map(this.getDataSuccess)
+                .catch(this.getDataError);
         }
-       
-    }
 
+    }
 
 
     // success method return response
-
     private getDataSuccess(response): Observable<any> {
-        console.log(JSON.stringify(response));
-        localStorage.removeItem('dataResponseUrl');
+        console.log('confirmUserData' + JSON.stringify(response));
+        var resultObj = JSON.stringify(response);
+        var result = JSON.parse(resultObj);
+        console.log(result.Result.sessionId);
         return response || {};
-
     }
 
     // error occurred return response
-    
     private getDataError(error): Observable<any> {
+        debugger;
         console.error('An error occurred', error);
-        localStorage.removeItem('dataResponseUrl');
         return Observable.throw(error);
-
     }
 
+
 }
+
+
 

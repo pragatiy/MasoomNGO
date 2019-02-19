@@ -1,52 +1,57 @@
-
 <ion-header>
     <ion-navbar>
-        <ion-title class="toolbar-ios-title">
-            <img alt="logo" height="40" src="assets/imgs/a2c-logo.png" (click) = "logoClick()"> 
+        <ion-title>
+            <img alt="logo" height="44" src="assets/imgs/a2c-logo.png" (click)="menuClick()">
         </ion-title>
         <span class="userIcon" *ngIf="isUserRegister">
-            <img alt="logo" height="40"   src="assets/imgs/component.png" (click) = "userProfileClick()">
+            <img alt="logo" height="40" src="assets/imgs/component.png" (click)="userProfileClick()">
         </span>
     </ion-navbar>
 </ion-header>
-<ion-content no-bounce padding class="accountList" (click)="menuClick()">
-    <div id="innerhei">
-        <ion-list  [reorder]="reorderIsEnabled" (press)="LongPressed()" (ionItemReorder)="reorderItems($event)">
-            <ion-item-group class="classGroup" *ngFor="let name of names; let i = index">
-                <ion-item class="itemList">           
-                    <ion-thumbnail item-start>
-                        <img src="{{name.imageSrc||'assets/imgs/user_img.png'}}" (click)="checkProtection(name.accountIndex,i)">
-                    </ion-thumbnail>
-                    <span class="accName" (click)="checkProtection(name.accountIndex,i)">
-                        <h2>{{name.accountName}}</h2>
-                        <p>{{name.accountId}}</p>
-                    </span>
-                    <button *ngIf="name.isRegister;else editAcc_content" class="pr-0" ion-button clear item-end [ngStyle]="{'display': isenableBlock}">
-                        <ion-icon name="ios-more" [attr.id]="'editIconId'+i" class="dot_icon" (click)="editAccount(name.accountIndex,i)"></ion-icon>
-                    </button>           
-                </ion-item>
-        </ion-item-group>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)"></ion-infinite-scroll>
+<ion-content padding class="accountList" (click)="menuClick()">
+    <div class="mainDivScrol">
+        <ion-list (press)="LongPressed()">
+            <ion-item-group [reorder]="modify" (ionItemReorder)="reorderItems($event)">
+                <ion-list id="mainDiv" *ngFor="let name of names; let i = index">
+                    <ion-item class="itemList">
+                        <ion-thumbnail item-start>
+                            <img (click)="checkProtection(name.accountIndex,i)" src="{{name.imageSrc||'assets/imgs/user_img_new.jpg'}}">
+                        </ion-thumbnail>
+                        <span class="accName" (click)="checkProtection(name.accountIndex,i)">
+                            <h2>{{name.accountName}}</h2>
+                            <p>{{name.accountId}}</p>
+                        </span>
+                        <button [style.display]="isDisplay" *ngIf="name.isRegister;else editAcc_content" class="pr-0"
+                            ion-button clear item-end>
+                            <ion-icon name="ios-more" [attr.id]="'editIconId'+i" class="dot_icon" (click)="editAccount(name.accountIndex,i)"></ion-icon>
+                        </button>
+                    </ion-item>
+                    <div class="totpCode" [attr.id]="'divId' + i">
+                        <ion-grid>
+                        </ion-grid>
+                    </div>
+                </ion-list>
+            </ion-item-group>
         </ion-list>
-    </div>    
-</ion-content >
-<div id="newho" >
+    </div>
+</ion-content>
+<div class="blankdivScrol">
     <ion-grid class="bottomIcons">
-        <ion-row text-center >
+        <ion-row text-center>
             <ion-col (click)="editSettings()">
-                <img class="tabImg settingClass" alt="logo" height="44" src="assets/imgs/Settings.png" >
-                <ion-label class="bottomTabsCaption" >Settings</ion-label>
+                <img class="tabImg" alt="logo" height="44" src="assets/imgs/Settings.png">
+                <ion-label class="bottomTabsCaption">Settings</ion-label>
             </ion-col>
             <ion-col (click)="barcodeClick()">
-                <img class="tabImg barcodeClass" alt="logo" height="44" src="assets/imgs/AddApp.png" >
+                <img class="tabImg" alt="logo" height="44" src="assets/imgs/AddApp.png">
                 <ion-label class="bottomTabsCaption">Add Apps</ion-label>
             </ion-col>
-            <ion-col *ngIf="isUserRegister" (click)="ConfirmUser('UnlockAccount')" >
-                <img class="tabImg unlockClass" alt="logo" height="44" src="assets/imgs/UnlockTab.png" >
+            <ion-col (click)="ConfirmUser('UnlockAccount')" *ngIf="isUserRegister">
+                <img class="tabImg" alt="logo" height="44" src="assets/imgs/UnlockTab.png">
                 <ion-label class="bottomTabsCaption">Unlock Account</ion-label>
             </ion-col>
-            <ion-col *ngIf="isUserRegister" (click)="ConfirmUser('ResetPassword')" >
-                <img class="tabImg resetClass" alt="logo" height="44" src="assets/imgs/ResetPassword.png" >
+            <ion-col (click)="ConfirmUser('ResetPassword')" *ngIf="isUserRegister">
+                <img class="tabImg" alt="logo" height="44" src="assets/imgs/ResetPassword.png">
                 <ion-label class="bottomTabsCaption">Reset Password</ion-label>
             </ion-col>
         </ion-row>

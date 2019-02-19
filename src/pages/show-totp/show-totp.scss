@@ -1,0 +1,721 @@
+page-show-totp {
+.accountList {
+    background-color: #D6E8ED;
+    
+  }
+
+
+.scroll-content{
+  .secCode{
+    text-align: center;
+    /*.headingLarge{
+      color: #192942;
+        font-size: 28px;
+        font-weight: bold;
+        background: #E2F2E8;
+        display: inline-block;
+        margin: auto;
+        padding: 30px 50px;
+        border: 1px solid #EDFFCA;
+    }*/
+       .headingLarge {
+        color: #192942;
+        font-size: 28px;
+        font-weight: bold;
+        background: #E2F2E8;
+        display: inline-block;
+        margin: auto;
+        padding: 22px 65px;
+        border: 1px solid #EDFFCA;
+        margin-top: 78px;
+       }
+
+  }
+  .btnBox {  
+        text-align: center;
+        padding: 20px;
+        /*position: absolute;*/
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        /*.appBtn {
+            padding: 10px 15px;
+            font-size: 18px;
+            color: #192942;
+            margin: 0 15px;
+            min-width: 100px;
+        }*/
+
+      .appBtn {
+          padding: 15px 48px;
+          font-size: 18px;
+          color: #192942;
+          margin: 20px 15px;
+          min-width: 100px;
+     }
+        .grayBdr {
+            border: 1px solid #A8BCC9;
+            background: #E2F2E8;
+        }
+        .greenBdr {
+            border: 1px solid #8CC63F;
+            background: #F0F7F2;
+            font-weight: bold;
+        }
+    }
+}
+
+.mainDivScrol{
+  .list{   
+    margin-bottom: 10px;
+    margin-top: 10px;
+    .itemList{
+    padding: 0 10px;         
+    height: 68px;
+    margin-top: 0px;
+    border: 1px solid #EDFFCA;
+      .item-inner{
+        .accName{
+          h2{
+                color: #192942;
+                font-size: 2.5rem;
+                margin-top: 4px;
+                margin-right: 50px !important;
+
+          }
+        }
+      }
+
+   .item-md ion-avatar[item-left], .item-md ion-thumbnail[item-left], .item-md ion-avatar[item-start], .item-md ion-thumbnail[item-start] {
+    margin: 18px 0px 8px 0px;
+    height: 70px;
+      }
+    }
+  }    
+}
+
+
+    .progress-circle {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background-color: #ebebeb;
+    }
+        .label{
+              text-align: center;
+        }
+        .input-md{
+            font-size: 1.4rem;
+        }
+        .toggleBtn{
+            padding: 0;
+            float: right;
+            .toggle{
+                padding: 12px 0;
+            }
+        }
+    
+    
+
+
+
+
+
+/*Custom*/
+
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 172px;
+    height: 70px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e1e1e1;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border: 2px solid #dadadb;
+}
+
+.slider:before {
+  position: absolute;
+  content: url(../assets/imgs/lock.png);
+  height: 71px;
+  width: 76px;
+  left: -2px;
+  bottom: -2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider:before {
+ position: absolute;
+  content: url(../assets/imgs/unlock.png);
+  height: 71px;
+  width: 76px;
+     left: -2px;
+    bottom: -2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  }
+
+input:checked + .slider {
+  background-color: #e1e1e1;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(100px);
+  -ms-transform: translateX(100px);
+  transform: translateX(100px);
+}
+
+span.slider.round:after {
+    content: url(../assets/imgs/arrow.png);
+    position: static;
+    z-index: -1;
+    float: right;
+    padding-right: 35px;
+    padding-top: 19px;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.push-notify{
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.slide-sec{
+    margin-top: 20px;
+}
+
+.compny{
+    color: #0197a3;
+    padding-bottom: 15px;
+    font-size: 35px;
+}
+
+
+.slide-sec{
+color: #596370;
+    width: 100%;
+    font-weight: 500;
+    text-align: center;
+}
+
+
+.slide{
+  padding-bottom: 8px;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.progress-sec{
+  padding-bottom: 25px;
+}
+
+/////////////////////////////////////////////////////
+.positionRelative{
+    position: relative;
+
+}
+
+$color-progress-circle-number: #fff;
+$color-progress-circle: #ebebeb;
+
+$color-progress-idicatored: #e50d0d;
+$color-progress-idicatoryellow: #f9dc1f;
+$color-progress-idicator: #77d353;
+
+$color-progress-number: #8b8b8b;
+
+h1{
+  color: #63B8FF;
+  text-align: center;
+}
+
+.progress-circle-container{
+   text-align: center;
+    width: 100%;
+}
+/*.progress-circle {
+  position: relative;
+  display: inline-block;
+  margin-right: 30px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: $color-progress-circle;
+}
+*/
+.progress-circle:after {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+ // -webkit-animation: colorload 2s;
+ // animation: colorload 2s;
+}
+ 
+
+
+.progress-circle span { 
+
+    font-size: 4.5rem;
+    font-weight: bold;
+    color: #000;
+    position: absolute;
+    left: 10px;
+    top: 11px;
+    display: block;
+    width: 120px;
+    height: 119px;
+    padding-top: 34px;
+    background: #fff;
+}
+
+.progress-circle.progress-0:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(90deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-1:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(93.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-2:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(97.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-3:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(100.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-4:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(104.4deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-5:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(108deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-6:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(111.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-7:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(115.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-8:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(118.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-9:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(122.4deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-10:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(126deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-11:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(129.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-12:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(133.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-13:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(136.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-14:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(140.4deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-15:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(129.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-16:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(133.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-17:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(136.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-18:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(140.4deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-19:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(144deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-20:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(151.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-21:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(158.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-22:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(161.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-23:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 165.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-24:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 169.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-25:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(180deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-26:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 183.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-27:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 187.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-28:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 190.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-29:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 194.4deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-30:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(198deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-31:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 201.6deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-32:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 205.2deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-33:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 208.8deg, $color-progress-idicatored 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-34:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 212.4deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-35:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(216deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-40:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(234deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-36:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 219.6deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-37:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 223.2deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-38:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 226.8deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-39:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 230.4deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-41:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 237.6deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-42:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 241.2deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-43:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 244.8deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-44:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 248.4deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-45:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient(252deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-46:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 255.6deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-47:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 259.2deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-48:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 262.8deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-49:after {
+  background-image: linear-gradient(90deg, $color-progress-circle 50%, transparent 50%, transparent), linear-gradient( 266.4deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-50:after {
+  background-image: linear-gradient(-90deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-51:after {
+  background-image: linear-gradient(-86.4deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-52:after {
+  background-image: linear-gradient(-82.6deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-53:after {
+  background-image: linear-gradient(-79.2deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-54:after {
+  background-image: linear-gradient(-75.6deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-55:after {
+  background-image: linear-gradient(-72deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-56:after {
+  background-image: linear-gradient(-68.4deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-57:after {
+  background-image: linear-gradient(-64.8deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-58:after {
+  background-image: linear-gradient(-61.2deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-59:after {
+  background-image: linear-gradient(-57.6deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-60:after {
+  background-image: linear-gradient(-54deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-61:after {
+  background-image: linear-gradient(-50.4deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-62:after {
+  background-image: linear-gradient(-46.8deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-63:after {
+  background-image: linear-gradient(-43.2deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-64:after {
+  background-image: linear-gradient(-39.6deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-65:after {
+  background-image: linear-gradient(-36deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-66:after {
+  background-image: linear-gradient(-32.4deg, $color-progress-idicatoryellow 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicatoryellow 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-67:after {
+  background-image: linear-gradient(-28.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-68:after {
+  background-image: linear-gradient(-25.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-69:after {
+  background-image: linear-gradient(-21.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-70:after {
+  background-image: linear-gradient(-18deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-71:after {
+  background-image: linear-gradient(-14.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-72:after {
+  background-image: linear-gradient(-10.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-73:after {
+  background-image: linear-gradient(-7.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-74:after {
+  background-image: linear-gradient(-3.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-75:after {
+  background-image: linear-gradient(0deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-76:after {
+  background-image: linear-gradient(3.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-77:after {
+  background-image: linear-gradient(7.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-78:after {
+  background-image: linear-gradient(10.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-79:after {
+  background-image: linear-gradient(14.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-80:after {
+  background-image: linear-gradient(18deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-81:after {
+  background-image: linear-gradient(21.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-82:after {
+  background-image: linear-gradient(25.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-83:after {
+  background-image: linear-gradient(28.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-84:after {
+  background-image: linear-gradient(32.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-85:after {
+  background-image: linear-gradient(36deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-86:after {
+  background-image: linear-gradient(39.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-87:after {
+  background-image: linear-gradient(43.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-88:after {
+  background-image: linear-gradient(46.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-89:after {
+  background-image: linear-gradient(50.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-90:after {
+  background-image: linear-gradient(54deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-91:after {
+  background-image: linear-gradient(57.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-92:after {
+  background-image: linear-gradient(61.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-93:after {
+  background-image: linear-gradient(64.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-94:after {
+  background-image: linear-gradient(68.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-95:after {
+  background-image: linear-gradient(72deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-96:after {
+  background-image: linear-gradient(75.6deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-97:after {
+  background-image: linear-gradient(79.2deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-98:after {
+  background-image: linear-gradient(82.8deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-99:after {
+  background-image: linear-gradient(86.4deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+.progress-circle.progress-100:after {
+  background-image: linear-gradient(90deg, $color-progress-idicator 50%, transparent 50%, transparent), linear-gradient(270deg, $color-progress-idicator 50%, $color-progress-circle 50%, $color-progress-circle);
+}
+
+@-webkit-keyframes colorload {
+  0% {
+    opacity: 0;
+    transform: rotate(0deg)
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(360deg)
+  }
+}
+
+
+
+}
+

@@ -1,6 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar } from 'ionic-angular';
-import { File } from '@ionic-native/file';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar, LoadingController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Camera } from '@ionic-native/camera';
 import { ActionSheetController } from 'ionic-angular';
@@ -8,17 +7,18 @@ import { AlertController } from 'ionic-angular';
 import { SettingPage } from '../setting/setting';
 import * as jsSHA from "jssha";
 import { Platform } from 'ionic-angular';
+import { UserProfilePage } from '../user-profile/user-profile';
+import { DefaulticonPage } from '../defaulticon/defaulticon';
 import { commonString } from "../.././app/commonString";
-import { UserProfilePage } from "../user-profile/user-profile";
-import { DefaulticonPage  } from '../defaulticon/defaulticon';
+
 /**
+
  * Generated class for the EditAccountPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
 
-declare var iCloudKV: any;
 @IonicPage()
 @Component({
     selector: 'page-edit-account',
@@ -33,7 +33,7 @@ export class EditAccountPage {
     public newaccountId: string;
     public accountName: string;
     public secretKey: string;
-    public imageSrc: any ;
+    public imageSrc: any = 'assets/imgs/user_img_new.jpg';
     public oldAccountId: string;
     public flag: number;
     public erroraccountId: any;
@@ -44,84 +44,59 @@ export class EditAccountPage {
     public accountProtectionIndex: number;
     public isDisable: Boolean = false;
     public keyUpFlag: Boolean = false;
+    public protectionPin: any = 0;
+    public deviceId: any;
     public newImgSrc: any;
-    protectionPin: number = 0;
     isUserRegister: Boolean = false;
 
-
-    constructor(public navCtrl: NavController,
-        public platform: Platform,
-        public navParams: NavParams,
-        private barcodeScanner: BarcodeScanner,
-        private file: File, private Camera: Camera,
-        public actionSheetCtrl: ActionSheetController,
-        private alertCtrl: AlertController) 
-        
-        {
-        localStorage.setItem('redirectTo', '');
-        debugger;    
-               platform.ready().then(() => {
-            this.accountIndex = navParams.get('accountIndex');   
-            const iconName = navParams.get('iconName');
+    constructor(public navCtrl: NavController, private loadingCtrl: LoadingController, private zone: NgZone, public navParams: NavParams, public platform: Platform, private barcodeScanner: BarcodeScanner, private Camera: Camera, public actionSheetCtrl: ActionSheetController, private alertCtrl: AlertController) {
+        platform.ready().then(() => {
+            localStorage.setItem('redirectTo', '');
             let imageSrc = navParams.get('imageSrc');
             console.log("imageSrc edit",imageSrc);
             if (imageSrc) {
                 this.newImgSrc = imageSrc;
             }else{
                 this.imageSrc = localStorage.getItem('imageSrc');
-            }	    
-            if (iconName) {	
-                this.accountName = iconName;
-                if ( this.accountName == 'other1' ||  this.accountName == 'other2' ||  this.accountName == 'other3' ||  this.accountName == 'other4'){
-                this.accountName = '';
-                }else{
-                this.accountName = iconName;
-                }
-                this.imageSrc = 'assets/account_icon/' + iconName + '.png';
-               
-
             }
-        
-        if (this.accountName == '') {
-                this.imageSrc = 'assets/account_icon/' + iconName + '.png';  
-               
-        }   
-        else{   
-            this.imageSrc = 'assets/account_icon/' + this.accountName + '.png';
-           
-        }
+            this.accountIndex = navParams.get("accountIndex");
+            let registerUsered = JSON.parse(localStorage.getItem("UserRegisterInfo"));
+            if (registerUsered) {
+                this.isUserRegister = true;
+            }
+            else {
+                this.isUserRegister = false;
+            }
+
             // device back button event 
             platform.registerBackButtonAction(() => {
                 this.backbuttonClick();
             });
-
             // app back button event 
             this.navBar.backButtonClick = (e: UIEvent) => {
                 this.backbuttonClick();
-            }      
+            }
 
             this.getaccountDetails();
-            
-                if(localStorage.getItem('accountName')){
-                    this.accountName= localStorage.getItem('accountName');
-                }
-                if(localStorage.getItem('accountId')){
-                    this.accountId= localStorage.getItem('accountId');
-                }
-                if(localStorage.getItem('getBarcodeResult')){
-                    this.secretKey= localStorage.getItem('getBarcodeResult');
-                }
-                if(localStorage.getItem('imageSrc')){
-                    this.imageSrc= localStorage.getItem('imageSrc');
-                }
 
-               
+            if (localStorage.getItem('accName')) {
+                this.accountName = localStorage.getItem('accName');
+            }
+            if (localStorage.getItem('accId')) {
+                this.accountId = localStorage.getItem('accId');
+            }
+            if (localStorage.getItem('barcodeResult')) {
+                this.secretKey = localStorage.getItem('barcodeResult');
+            }
+            this.deviceId = localStorage.getItem('deviceId');
+
         })
     }
 
+
+
     // if back button is clicked without saving data
     backbuttonClick() {
-
         if (this.keyUpFlag == true) {
             this.backbuttonAlert();
         } else {
@@ -131,9 +106,10 @@ export class EditAccountPage {
     }
 
     backbuttonAlert() {
+        try{
         let alert = this.alertCtrl.create({
             title: '',
-            message: commonString.addAccPage.alertButonMessage,
+            message: commonString.editAccPage.backBtnMsg,
             buttons: [
                 {
                     text: 'No',
@@ -153,64 +129,22 @@ export class EditAccountPage {
             ]
         });
         alert.present();
-
+      } catch (error) { console.log("Error occured",error); }
     }
-
 
     ionViewDidLoad() {
         // device back button event 
+        this.accountIndex = this.navParams.data.accountIndex;
+        console.log("this.accountIndex",this.navParams);
         this.platform.registerBackButtonAction(() => {
             this.backbuttonClick();
         });
-
         // app back button event 
         this.navBar.backButtonClick = (e: UIEvent) => {
             this.backbuttonClick();
         }
         console.log('ionViewDidLoad EditAccountPage');
-        sessionStorage.setItem("AddEdit", "YES");
     }
-
-    ionViewWillEnter() {
-        try {
-            let registerUsered = JSON.parse(localStorage.getItem("UserRegisterInfo"));
-            if (registerUsered) {
-                this.isUserRegister = true;
-            } else {
-                this.isUserRegister = false;
-            }
-        } catch (error) {
-            console.log('error');
-        }
-
-    }
-
-    // User Profile Method
-
-    userProfileClick() {
-        try {
-            this.navCtrl.push(UserProfilePage);
-        } catch (error) {
-            console.log('error');
-        }
-    }
-
-    // Back Button Click
-
-    public backLogoClick() {
-        try {
-            this.navCtrl.popToRoot();
-        } catch (error) {
-            console.log('error');
-        }
-    }
-
-    CancelButton() {
-        this.navCtrl.popToRoot();
-       
-		
-	}
-
 
     getaccountDetails() {
         try {
@@ -221,13 +155,11 @@ export class EditAccountPage {
             this.accountName = selectedAcc.accountName;
             this.accountId = selectedAcc.accountId;
             this.secretKey = selectedAcc.secretKey;
-            // this.imageSrc = selectedAcc.imageSrc;
             if(this.newImgSrc){
                 this.imageSrc = this.newImgSrc;
             }else{
                 this.imageSrc = selectedAcc.imageSrc;
             }
-
             this.accountProtectionEnable = selectedAcc.accountProtectionEnable;
             let oldgetStorage = JSON.parse(localStorage.getItem("Appsetting"));
             if (oldgetStorage) {
@@ -241,7 +173,6 @@ export class EditAccountPage {
                     else if ((selectedAcc.accountProtectionEnable == true) && (oldgetStorage.accountProtection == 1)) {
                         this.accountProtectionEnable = true;
                     }
-
                     else {
                         this.accountProtectionEnable = false;
                     }
@@ -249,14 +180,12 @@ export class EditAccountPage {
             }
             else {
                 this.accountProtectionEnable = false;
-
             }
         }
         catch (error) { console.log("Error occured"); }
     }
 
     // Update Barcode Secrect Key
-
     barcodeClick() {
         try {
             this.keyUpFlag = true;
@@ -302,76 +231,77 @@ export class EditAccountPage {
                     this.secretKey = barcodeData.text;
                     this.checkSecrekey(this.secretKey);
                 }
-
             }, (err) => {
                 console.log("Error occured : " + err);
             });
         } catch (error) { console.log("Error occured"); }
     }
 
+
     // add account details function
     editAccountdetails() {
-        try {
-            debugger;
-            this.checkAccount();
-            if (this.flag == 0) {
-                return;
-            }
-            this.checkAccountName();
-            if (this.flag == 0) {
-                return;
-            }
-            this.checkSecrekey(this.secretKey);
-            if (this.flag == 0) {
-                return;
-            }
-            this.checkAccountID();
-            if (this.flag == 0) {
-                return;
-            }
+        this.zone.run(() => {
 
-            let oldgetStorage = JSON.parse(localStorage.getItem("accounts"));
-            let index = oldgetStorage.findIndex(obj => obj.accountIndex == this.accountIndex);
-            oldgetStorage[index].accountIndex = this.accountIndex;
-            oldgetStorage[index].accountId = this.accountId.trim();
-            oldgetStorage[index].accountName = this.accountName.trim();
-            oldgetStorage[index].secretKey = this.secretKey.trim();
-            oldgetStorage[index].imageSrc = this.imageSrc;
-            oldgetStorage[index].accountProtectionEnable = this.accountProtectionEnable;
-            localStorage.setItem("accounts", JSON.stringify(oldgetStorage));
+            try {
+                this.checkAccount();
+                if (this.flag == 0) {
+                    return;
+                }
+                this.checkAccountName();
+                if (this.flag == 0) {
+                    return;
+                }
+                this.checkSecrekey(this.secretKey);
+                if (this.flag == 0) {
+                    return;
+                }
+                this.checkAccountID();
+                if (this.flag == 0) {
+                    return;
+                }
+                let totpProtection = JSON.parse(localStorage.getItem("Appsetting"));
 
-            let enableTxt = localStorage.getItem('isEnable');
-            if (enableTxt == 'Enable') {
-                let getAccountData = localStorage.getItem("accounts");
-                let oldgetStorageSetting = localStorage.getItem("Appsetting");
-
-                let getStorageToDisplayval = getAccountData.concat('NOSETTING' + oldgetStorageSetting);
-                iCloudKV.save("BaackupData", getStorageToDisplayval, this.saveSuccess);
-
-
-
-            }
-            this.navCtrl.popToRoot();
-        } catch (error) { console.log("Error occured"); }
+                if (totpProtection) {
+                    this.protectionPin = totpProtection.accountProtectionPin;
+                }
+                let oldgetStorage = JSON.parse(localStorage.getItem("accounts"));
+                let index = oldgetStorage.findIndex(obj => obj.accountIndex == this.accountIndex);
+                oldgetStorage[index].accountIndex = this.accountIndex;
+                oldgetStorage[index].accountId = this.accountId.trim();
+                oldgetStorage[index].accountName = this.accountName.trim();
+                oldgetStorage[index].secretKey = this.secretKey.trim();
+                oldgetStorage[index].imageSrc = this.imageSrc;
+                oldgetStorage[index].accountProtectionEnable = this.accountProtectionEnable;
+                oldgetStorage[index].accountProtectionPin = this.protectionPin;
+                console.log("Error occured",oldgetStorage);
+                localStorage.setItem("accounts", JSON.stringify(oldgetStorage));
+                this.enableGoogleDrive();
+                this.navCtrl.popToRoot();
+            } catch (error) { console.log("Error occured"); }
+        });
     }
 
     // Edit Account Form Validation
     checkAccount() {
-        try {
-            if (this.accountName.trim() == '') {
-                this.erroraccountName = commonString.addAccPage.erroraccountName;
-                this.flag = 0;
+        this.zone.run(() => {
+
+            try {
+                if (this.accountName.trim() == '') {
+                    this.erroraccountName = commonString.editAccPage.erroraccountName;
+                    this.flag = 0;
+                }
+                if (this.accountId == undefined) {
+                    this.erroraccountId = commonString.editAccPage.erroraccountId;
+                    this.flag = 0;
+                }
+                if (this.secretKey == "") {
+                    this.errorSecretkey = commonString.editAccPage.errorSecretkey;
+                    this.flag = 0;
+                }
             }
-            if (this.accountId == undefined) {
-                this.erroraccountId = commonString.addAccPage.erroraccountId;
-                this.flag = 0;
-            }
-            if (this.secretKey == "") {
-                this.errorSecretkey = commonString.addAccPage.errorSecretkey;
-                this.flag = 0;
-            }
-        }
-        catch (error) { console.log("Error occured"); }
+            catch (error) { console.log("Error occured"); }
+
+        });
     }
     onKeySecret(event) {
         try {
@@ -394,18 +324,20 @@ export class EditAccountPage {
     }
 
     checkAccountName() {
-        try {
-            this.flag = 1;
-            let accountName = this.accountName;
-            if (accountName.length <= 0) {
-                this.erroraccountName = commonString.addAccPage.erroraccountName;
-                this.flag = 0;
-            }
-            else {
-                this.erroraccountName = "";
+        this.zone.run(() => {
+            try {
                 this.flag = 1;
-            }
-        } catch (error) { console.log("Error occured"); }
+                let accountName = this.accountName;
+                if (accountName.length <= 0) {
+                    this.erroraccountName = commonString.editAccPage.erroraccountName;
+                    this.flag = 0;
+                }
+                else {
+                    this.erroraccountName = "";
+                    this.flag = 1;
+                }
+            } catch (error) { console.log("Error occured"); }
+        });
     }
 
     // Check Account ID
@@ -416,20 +348,22 @@ export class EditAccountPage {
         } catch (error) { console.log("Error occured"); }
     }
     checkAccountID() {
-        try {
-            let accountId = this.accountId;
-            this.flag = 1;
-            if (accountId.length <= 0) {
-                this.erroraccountId = "Enter account id";
-                this.flag = 0;
-            }
-            else {
-                this.erroraccountId = "";
+        this.zone.run(() => {
+            try {
+                let accountId = this.accountId;
                 this.flag = 1;
-            }
-        } catch (error) { console.log("Error occured"); }
+                if (accountId.length <= 0) {
+                    this.erroraccountId = commonString.editAccPage.erroraccountId;
+                    this.flag = 0;
+                }
+                else {
+                    this.erroraccountId = "";
+                    this.flag = 1;
+                }
+            } catch (error) { console.log("Error occured"); }
+        });
     }
-
+    // end
     removeItem1() {
         try {
             let oldgetStorage = JSON.parse(localStorage.getItem("accounts"));
@@ -458,7 +392,7 @@ export class EditAccountPage {
     }
 
     private base32tohex(base32: string) {
-        let base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        let base32chars = commonString.editAccPage.base32CharStrg;
         let bits = "";
         let hex = "";
         for (let i = 0; i < base32.length; i++) {
@@ -473,52 +407,51 @@ export class EditAccountPage {
     }
 
     checValidKey(secretKey) {
-        try {
-
-            let epoch = Math.round(new Date().getTime() / 1000.0);
-            let time = this.leftpad(this.dec2hex(Math.floor(epoch / 30)), 16, "0");
-            let hmacObj = new jsSHA(time, "HEX");
-            let hmac = hmacObj.getHMAC(this.base32tohex(secretKey), "HEX", "SHA-1", "HEX");
-            let offset = this.hex2dec(hmac.substring(hmac.length - 1));
-            var otp = (this.hex2dec(hmac.substr(offset * 2, 8)) & this.hex2dec("7fffffff")) + "";
-            otp = (otp).substr(otp.length - 6, 6);
-
-            this.errorSecretkey = "";
-            this.flag = 1;
-
-
-        } catch (error) {
-            console.log("Error occured");
-            this.errorSecretkey = commonString.addAccPage.invalidSecret;
-            this.flag = 0;
-        }
+        this.zone.run(() => {
+            try {
+                let epoch = Math.round(new Date().getTime() / 1000.0);
+                let time = this.leftpad(this.dec2hex(Math.floor(epoch / 30)), 16, "0");
+                let hmacObj = new jsSHA(time, "HEX");
+                let hmac = hmacObj.getHMAC(this.base32tohex(secretKey), "HEX", "SHA-1", "HEX");
+                let offset = this.hex2dec(hmac.substring(hmac.length - 1));
+                var otp = (this.hex2dec(hmac.substr(offset * 2, 8)) & this.hex2dec("7fffffff")) + "";
+                otp = (otp).substr(otp.length - 6, 6);
+                this.errorSecretkey = "";
+                this.flag = 1;
+            } catch (error) {
+                console.log("Error occured");
+                this.errorSecretkey = commonString.editAccPage.errorSecretkey;
+                this.flag = 0;
+            }
+        });
     }
+
 
     browseImgClick() {
-        if(this.accountName){
-            localStorage.setItem('accountName', this.accountName);
-             }
-             if(this.accountId){
-             localStorage.setItem('accountId', this.accountId);
-            }
-            if(this.secretKey){
-             localStorage.setItem('getBarcodeResult', this.secretKey);
-             }
-            if(this.imageSrc){
-               localStorage.setItem('imageSrc', this.imageSrc);
-             }
-           this.navCtrl.push(DefaulticonPage,{'pageName':'editAccount', accountIndex: this.accountIndex});
 
+        if (this.accountName) {
+            localStorage.setItem('accName', this.accountName);
+        }
+        if (this.accountId) {
+            localStorage.setItem('accId', this.accountId);
+        }
+        if (this.secretKey) {
+            localStorage.setItem('barcodeResult', this.secretKey);
+        }
+        if (this.imageSrc) {
+            localStorage.setItem('imageSrc', this.imageSrc);
+        }
+        this.navCtrl.push(DefaulticonPage, { 'pageName': 'editAccount', 'accountIndex': this.accountIndex });
     }
 
-   
-    // Delete Confirm Box code
 
+
+    // Delete Confirm Box code
     removeItemConfirm() {
         try {
             let alert = this.alertCtrl.create({
                 title: '',
-                message: commonString.addAccPage.deleteMessage,
+                message: commonString.editAccPage.deletAccMes,
                 buttons: [
                     {
                         text: 'No',
@@ -545,9 +478,10 @@ export class EditAccountPage {
         } catch (error) { console.log("Error occured"); }
 
     }
+    // end code
+
 
     // Toggle Click Function
-
     toggleClick() {
         this.keyUpFlag = true;
         let newacc = this.accountProtectionEnable;
@@ -560,7 +494,7 @@ export class EditAccountPage {
                 else {
                     let alert = this.alertCtrl.create({
                         title: '',
-                        message: commonString.addAccPage.settingSave,
+                        message: commonString.editAccPage.toggleClickMsg,
                         buttons: [
                             {
                                 text: 'No',
@@ -589,23 +523,11 @@ export class EditAccountPage {
                                     this.secretKey = selectedAcc.secretKey;
                                     this.imageSrc = selectedAcc.imageSrc;
                                     this.accountProtectionEnable = newacc;
-
                                     let index = oldStorage.findIndex(obj => obj.accountIndex == this.accountIndex);
                                     oldStorage[index].accountProtectionEnable = newacc;
                                     localStorage.setItem("accounts", JSON.stringify(oldStorage));
+                                    this.enableGoogleDrive();
                                     this.navCtrl.push(SettingPage);
-                                    let enableTxt = localStorage.getItem('isEnable');
-                                    if (enableTxt == 'Enable') {
-                                        let getAccountData = localStorage.getItem("accounts");
-                                        let oldgetStorageSetting = localStorage.getItem("Appsetting");
-
-                                        let getStorageToDisplayval = getAccountData.concat('NOSETTING' + oldgetStorageSetting);
-                                        iCloudKV.save("BaackupData", getStorageToDisplayval, this.saveSuccess);
-
-
-
-                                    }
-
                                 }
                             }
                         ]
@@ -616,7 +538,7 @@ export class EditAccountPage {
             else {
                 let alert = this.alertCtrl.create({
                     title: '',
-                    message: commonString.addAccPage.settingSave,
+                    message: commonString.editAccPage.toggleClickMsg,
                     buttons: [
                         {
                             text: 'No',
@@ -644,58 +566,91 @@ export class EditAccountPage {
                                 this.secretKey = selectedAcc.secretKey;
                                 this.imageSrc = selectedAcc.imageSrc;
                                 this.accountProtectionEnable = newacc;
-
                                 let index = oldStorage.findIndex(obj => obj.accountIndex == this.accountIndex);
                                 oldStorage[index].accountProtectionEnable = newacc;
                                 localStorage.setItem("accounts", JSON.stringify(oldStorage));
+                                this.enableGoogleDrive();
                                 this.navCtrl.push(SettingPage);
-                                let enableTxt = localStorage.getItem('isEnable');
-                                if (enableTxt == 'Enable') {
-                                    let getAccountData = localStorage.getItem("accounts");
-                                    let oldgetStorageSetting = localStorage.getItem("Appsetting");
-
-                                    let getStorageToDisplayval = getAccountData.concat('NOSETTING' + oldgetStorageSetting);
-                                    iCloudKV.save("BaackupData", getStorageToDisplayval, this.saveSuccess);
-
-
-
-                                }
-
                             }
                         }
                     ]
                 });
                 alert.present();
+            }
+        }
+    }
 
+
+
+    // account backup function 
+
+    enableGoogleDrive() {
+        let enableTxt = localStorage.getItem('isEnable');
+        if (enableTxt) {
+            if (enableTxt == 'Enabled') {
+                localStorage.setItem('isEnable', 'Enabled');
+                let getAccountData = JSON.parse(localStorage.getItem("accounts"));
+                let totpProtection = JSON.parse(localStorage.getItem("Appsetting"));
+                if (totpProtection) {
+                    totpProtection.deviceId = this.deviceId;
+                }
+                localStorage.setItem("Appsetting", JSON.stringify(totpProtection));
+                localStorage.setItem("accounts", JSON.stringify(getAccountData));
+                let accountsString = localStorage.getItem("accounts");
+                let settingsString = localStorage.getItem("Appsetting");
+                let backupString = accountsString.concat('splitSet' + settingsString);
+                console.log('accounts ' + accountsString);
+                console.log('settings' + settingsString);
+                console.log('backkup' + backupString);
+                let encryptAccData = window.btoa(backupString);
+                if (encryptAccData) {
+                    let cameraOptions: any = { data: encryptAccData };
+                    this.Camera.getPicture(cameraOptions)
+                        .then(Response => {
+                            let lastbackupdateTime = this.formatDateTime();
+                            localStorage.setItem('lastBackupTime', lastbackupdateTime);
+                        },
+                            err => {
+                                console.log(err)
+                            });
+                }
+            } else {
+                localStorage.setItem('isEnable', 'Disabled');
             }
         }
 
     }
 
-    saveSuccess() {
-        console.log("save data sucessfully");
-        newtime = formatDateTime();
-        localStorage.setItem('lastBackupTime', newtime);
+    formatDateTime() {
+        let minutes: any;
+        var date = new Date();
+        let monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+        var hours = date.getHours();
+        minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = monthNames[date.getMonth()] + ' ' + date.getDate() + ',' + ' ' + date.getFullYear() + ' ' + hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+
+    }
+
+
+    CancelButton() {
+        this.navCtrl.popToRoot();
+
+    }
+
+    userProfileClick() {
+        this.navCtrl.push(UserProfilePage, { 'backTo': 'editAccount' });
     }
 
 }
 
-var newtime;
 
-function formatDateTime() {
-    let minutes: any;
-    var date = new Date();
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    var hours = date.getHours();
-    minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = monthNames[date.getMonth()] + ' ' + date.getDate() + ',' + ' ' + date.getFullYear() + ' ' + hours + ':' + minutes + ' ' + ampm;
 
-    return strTime;
 
-}
+

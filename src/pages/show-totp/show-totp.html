@@ -1,0 +1,33 @@
+<ion-header>
+	<ion-navbar hideBackButton>
+		<ion-title>
+			<img alt="logo" height="44" src="assets/imgs/a2c-logo.png" (click)="backLogoClick()">
+		</ion-title>
+		<span class="userIcon" *ngIf="isUserRegister">
+			<img alt="logo" height="40" src="assets/imgs/component.png" (click)="userProfileClick()">
+		</span>
+	</ion-navbar>
+</ion-header>
+<ion-content padding class="accountList">
+	<div id="mainDiv" class="mainDivScrol">
+		<ion-list>
+			<ion-item class="itemList">
+				<ion-thumbnail item-start>
+					<img src="{{imgSrc||'assets/imgs/user_img_new.jpg'}}">
+				</ion-thumbnail>
+				<span class="accName">
+					<h2>{{accountName}}</h2>
+				</span>
+			</ion-item>
+		</ion-list>
+	</div>
+	<div class="progress-circle-container" id="timerDiv">
+		<div class="progress-circle progress-{{countdownCss}}"><span>{{countDownlocal}}</span></div>
+	</div>
+	<div class="secCode">
+		<ion-label class="headingLarge">{{globalOTP}}</ion-label>
+	</div>
+	<div class="btnBox">
+		<button class="appBtn grayBdr" (click)="backLogoClick()">Done</button>
+	</div>
+</ion-content>

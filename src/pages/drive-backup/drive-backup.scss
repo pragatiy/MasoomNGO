@@ -1,79 +1,77 @@
 page-drive-backup {
-    .input-wrapper {
-        .icon-enable {
-            text-overflow: initial !important;
-            white-space: inherit !important;
-            font-size: 17px;
-        }
-    }
-    .labelWrap {
-        ion-label {
-            white-space: initial;
-            margin: 25px 0;
-        }
-    }
-    .item-toggle {
-        .input-wrapper {
-            display: block;
-            .colorGray {
-                color: #999;
-                white-space: normal;
-                margin-bottom: 30px;
-                margin-top: -24px;
-                font-size: 14px;
-            }
-            .enableHeader {
-                font-size: 20px;
-                margin-bottom: 0;
-                margin-top: 35px;
-                height: 54px;
+	.input-wrapper{
+	  	.icon-enable {
+		    text-overflow: initial !important;
+		    white-space: inherit !important;
+		    font-size: 17px;
+		}
+	  }
+
+	.labelWrap{
+		ion-label{
+		    white-space: initial;
+	        margin: 25px 0;
+		}
+	}
+
+	.item-toggle{
+		.input-wrapper{
+			display: block;
+			.colorGray{
+				color: #999;
+			    white-space: normal;
+			    margin-bottom: 30px;
+			    font-size: 13px;
+			    margin-top: -5px;
+			}
+			.enableHeader{
+				font-size: 20px;
+			    margin-bottom: 0;
+			    margin-top: 20px;
+			    height: 35px;
                 padding-bottom: 0% !important;
-            }
-        }
-        .backupToggle {
-            display: block;
-            position: absolute;
-            right: 0;
-            top: 20px;
-            width: 45px;
-            height: 16px;
-            .toggle-inner {
-                width: 22px;
-                height: 22px;
-            }
-        }
-        .backupIosToggle {
-            position: absolute;
-            right: 0;
-            top: 20px;
-        }
-        .backupToggle.toggle-md.toggle-checked .toggle-inner {
-            transform: translate3d(26px, 0, 0);
-            -webkit-transform: translate3d(26px, 0, 0);
-        }
-    }
-    .backupSumBox {
-        border-bottom: 1px solid #ddd;
-        .backupSumHeader {
-            h2 {
-                text-align: center;
-                margin: 15px 0 0;
-                font-size: 23px;
-                width: 100%;
-                font-weight: 400;
-            }
-            .label {
-                margin-top: 0;
-                color: #999;
-                margin-bottom: 40px;
-            }
-        }
-        .sumSelection {
-            font-size: 18px;
-            margin: 5px 0;
-            .text-right {
-                text-align: right;
-            }
-        }
-    }
+
+			}
+		}
+		.backupToggle{
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 15px;
+			width: 45px;
+		    height: 16px;
+			.toggle-inner{
+				width: 22px;
+				height: 22px;
+			}
+		}
+		.backupToggle.toggle-md.toggle-checked .toggle-inner{
+			transform: translate3d(26px, 0, 0);
+			-webkit-transform: translate3d(26px, 0, 0);
+		}
+	}
+	.backupSumBox{
+		border-bottom: 1px solid #ddd;
+		.backupSumHeader{
+			h2{
+				text-align: center;
+			    margin: 15px 0 0;
+			    font-size: 23px;
+			    width: 100%;
+			    font-weight: 400;
+			}
+			.label{
+				margin-top: 0;
+				color: #999;
+			    margin-bottom: 40px;
+			}
+		}
+		.sumSelection{
+			font-size: 18px;
+			margin: 5px 0;
+			.text-right{
+				text-align: right;
+			}
+		}
+	}
 }

@@ -1,12 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AppVersion } from '@ionic-native/app-version';
-import { Toast } from '@ionic-native/toast';
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { Platform } from 'ionic-angular';
 import { LicenceAgreementProvider } from '../../providers/licence-agreement/licence-agreement';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 import { File } from '@ionic-native/file';
+import { Device } from '@ionic-native/device';
+import { AndroidFingerprintAuth } from '@ionic-native/android-fingerprint-auth';
 import { GeneratePinPage } from '../generate-pin/generate-pin';
+import { commonString } from "../.././app/commonString";
 /**
  * Generated class for the WelcomePage page.
  *
@@ -14,366 +17,284 @@ import { GeneratePinPage } from '../generate-pin/generate-pin';
  * Ionic pages and navigation.
  */
 
-declare var iCloudKV: any;
-
-
 @IonicPage()
 @Component({
   selector: 'page-welcome',
   templateUrl: 'welcome.html',
 })
 export class WelcomePage {
-  loading: any;
+
   companyName: any;
   licenceId: any;
   A2CapiUrl: any;
   defaultimageSrc: any;
-  file: any;
-  apiUrlA2c: any;
-  protectionPin: any = 0;
+  accountArr: any = [];
+  accountArr1: any = [];
+  accountProtectionName: string = 'Not Set';
+  protectionPin: any;
   accountProtection: any = 0;
+  newdeviceId: any;
+  fingerprint: boolean;
+  constructor(public restProvider: LicenceAgreementProvider, public androidFingerprintAuth: AndroidFingerprintAuth, private device: Device, private transfer: FileTransfer, private file: File, public navCtrl: NavController, public platform: Platform, private appVersion: AppVersion, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public navParams: NavParams) {
+    platform.ready().then(() => {
+      this.androidFingerprintAuth.isAvailable()
+        .then((result) => {
+          if (result.isAvailable) {
+            this.fingerprint = true;
+          } else {
+            this.fingerprint = false;
+          }
+        })
+      this.newdeviceId = localStorage.getItem('deviceId');
+      platform.registerBackButtonAction(() => {
 
-  constructor(public navCtrl: NavController, private transfer: FileTransfer, public restProvider: LicenceAgreementProvider, private toast: Toast, private appVersion: AppVersion, private loadingCtrl: LoadingController, private alertCtrl: AlertController, public navParams: NavParams) {
-
-    navCtrlnew = navCtrl;
-    toastdata = toast;
-    alertdata = this.alertCtrl;
-    loadingdata = this.loading;
-    transferdata = this.transfer;
-    filedata = this.file;
-    restProviderdata = this.restProvider;
-    loadingdata = this.loadingCtrl.create({
-      content: 'Please wait while restoring data from iCloud.',
-      duration: 5000
-    });
-
+      });
+    })
   }
+
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad welcomePage');
-    sessionStorage.setItem("AddEdit", "YES");
+    this.newdeviceId = localStorage.getItem('deviceId');
+    console.log('ionViewDidLoad WelcomePage');
   }
-
 
 
   redirectToApp() {
     localStorage.setItem('isFirstAppLaunch', 'Yes');
     this.navCtrl.popToRoot();
   }
-
-  RestoreBackup() {
-    loadingdata.present();
-    setTimeout(() => { iCloudKV.load("BaackupData", this.successCallback, this.failCallback); }, 5000);
-
-  }
-
-  successCallback(returnedJSON) {
-    loadingdata.dismiss();
-
-    console.log("called load sucess function");
-    str_array = returnedJSON.split('NOSETTING');
-    let newSetting = str_array[1];
-
-    deviceId = localStorage.getItem('uuid');
-    let isFingerPrintEnable = localStorage.getItem('isFingerPrintEnable');
-    localStorage.setItem("accounts", str_array[0]);
-
-    if(newSetting == undefined){
-
-    SaveUserSucessData();
-    let myObj = {
-      appicationBackup: false,
-      accountProtection: accountProtection,
-      accountProtectionPin: protectionPin,
-      notificationSound: "default",
-      vibration: true,
-      userRegister: "unregister",
-      settingProtectionType: 0,
-      isSettingProtect: false
-    };
-    localStorage.setItem("Appsetting", JSON.stringify(myObj));
-    navCtrlnew.popToRoot();
-  }
-  else{
-
-   
-    localStorage.setItem("NewAppSetting", str_array[1]);
-    let SettingStorage = JSON.parse(localStorage.getItem("NewAppSetting"));
-
-    if (SettingStorage.uuid == deviceId) {
-
-      if ((isFingerPrintEnable == 'no') && (SettingStorage.accountProtectionPin != 0)) {
-        SettingStorage.accountProtection = 2;
-        SettingStorage.settingProtectionType = 2;
-        localStorage.setItem("Appsetting", JSON.stringify(SettingStorage));
-        localStorage.setItem("RingToneData", SettingStorage.notificationSound);
-        SaveUserSucessData();
-        navCtrlnew.popToRoot();
-      }
-      else if((isFingerPrintEnable == 'no') && (SettingStorage.accountProtectionPin == 0)){
-        SettingStorage.accountProtection = 0;
-        SettingStorage.settingProtectionType = 0;
-        SettingStorage.isSettingProtect = false;
-        
-        localStorage.setItem("Appsetting", JSON.stringify(SettingStorage));
-        localStorage.setItem("RingToneData", SettingStorage.notificationSound);
-        SaveUserSucessData();
-        navCtrlnew.popToRoot();
-
-      }
-      else {
-        console.log('Done Backup with same device id');
-        localStorage.setItem("Appsetting", str_array[1]);
-        localStorage.setItem("RingToneData", SettingStorage.notificationSound);
-        SaveUserSucessData();
-        navCtrlnew.popToRoot();
-      }
-
-    }
-    else {
-
-      if (SettingStorage.accountProtection == 2) {
-        localStorage.setItem("Appsetting", str_array[1]);
-        let alert = alertdata.create({
-          subTitle: 'Notification sound is not restored.',
-          buttons: ['Ok']
-        });
-        alert.present();
-        SaveUserSucessData();
-
-        navCtrlnew.popToRoot();
-      }
-
-      else if (SettingStorage.accountProtection == 1) {
-        if ((isFingerPrintEnable == 'yes') && (SettingStorage.accountProtection == 1)) {
-          let alert = alertdata.create({
-            subTitle: 'Notification sound is not restored.',
-            buttons: ['Ok']
-          });
-          alert.present();
-          localStorage.setItem("Appsetting", str_array[1]);
-          SaveUserSucessData();
-
-          navCtrlnew.popToRoot();
-        }
-        else if ((isFingerPrintEnable == 'no') && (SettingStorage.accountProtectionPin != 0)) {
-          let alert = alertdata.create({
-            subTitle: 'Biometric protection and Notification sound is not restored.',
-            buttons: ['Ok']
-          });
-          alert.present();
-          SettingStorage.accountProtection = 2;
-          SettingStorage.settingProtectionType = 2;
-          localStorage.setItem("Appsetting", JSON.stringify(SettingStorage));
-          SaveUserSucessData();
-
-          navCtrlnew.popToRoot();
-        }
-
-        else if ((isFingerPrintEnable == 'no') && (SettingStorage.accountProtectionPin == 0)) {
-          try {
-            let alert = alertdata.create({
-              title: '',
-              message: 'Biometric protection and Notification sound is not restored, Please set 4 Digit Pin account protection!',
-              buttons: [
-                {
-                  text: 'No',
-                  role: 'cancel',
-                  handler: () => {
-                    console.log('Cancel clicked');
-                    SettingStorage.accountProtection = 0;
-                    SettingStorage.settingProtectionType = 0;
-                    SettingStorage.isSettingProtect = false;
-                    localStorage.setItem("Appsetting", JSON.stringify(SettingStorage));
-                    SaveUserSucessData();
-
-                    navCtrlnew.popToRoot();
-
-                  }
-                },
-                {
-                  text: 'Yes',
-                  handler: () => {
-                    console.log('Buy clicked');
-                    if (SettingStorage.isSettingProtect == true) {
-                      SettingStorage.settingProtectionType = 2;
-                      localStorage.setItem("Appsetting", JSON.stringify(SettingStorage));
-                    }
-                    SaveUserSucessData();
-
-                    navCtrlnew.push(GeneratePinPage, { settingProtectionIndex: 1, redirectWelcome: 'YES' });
-
-
-                  }
-                }
-              ]
-            });
-            alert.present();
-          } catch (error) {
-            console.log('Error occured');
-          }
-        }
-        else {
-
-          let alert = alertdata.create({
-            subTitle: 'Notification sound is not restored.',
-            buttons: ['Ok']
-          });
-          alert.present();
-          localStorage.setItem("Appsetting", str_array[1]);
-        }
-      }
-
-    }
-
-  }
-
-
-  }
-
-  failCallback() {
-    console.log("called load failCallback function");
-    localStorage.setItem('isFirstAppLaunch', 'Yes');
-    navCtrlnew.popToRoot();
-  }
-}
-
-
-function SaveUserSucessData() {
-  let getAccountData = JSON.parse(localStorage.getItem("accounts"));
-  if (getAccountData) {
-    if (getAccountData.length > 0) {
-      for (let i = 0; i < getAccountData.length; i++) {
-
-        if (getAccountData[i].accountProtectionPin != 0) {
-          protectionPin = getAccountData[i].accountProtectionPin;
-          accountProtection = 2;
-        }
-        else {
-          protectionPin = 0;
-          accountProtection = 0;
-        }
-
-       // localStorage.setItem('isEnable', 'Enable');
-    
-
-        if (getAccountData[i].imageSrc != null && getAccountData[i].imageSrc != "") {
-
-          if ((getAccountData[i].CompanyIcon != '') && (getAccountData[i].CompanyIcon != undefined)) {
-
-            /////
-            companyNameset = getAccountData[i].companyname;
-            licenceIdset = getAccountData[i].licenseId;
-            apiUrlA2cset = getAccountData[i].apiUrlA2c;
-            localStorage.setItem('apiUrlA2c', apiUrlA2cset);
-
-            getUsersData();
-
-            let userAcc = {
-
-              pushPin: getAccountData[i].App_Push_Pin,
-              companyname: getAccountData[i].companyname,
-              SuccessCode: getAccountData[i].SuccessCode,
-              sessionId: getAccountData[i].sessionId,
-              tag: getAccountData[i].tag,
-              CN: getAccountData[i].CN,
-              CompanyIcon: getAccountData[i].CompanyIcon,
-              OTPSecretKey: getAccountData[i].OTPSecretKey,
-              email: getAccountData[i].email,
-              mobile: getAccountData[i].mobile,
-              name: getAccountData[i].name,
-              userName: getAccountData[i].userName,
-              accountName: getAccountData[i].CN,
-              imageSrc: getAccountData[i].imageSrc,
-              secretKey: getAccountData[i].OTPSecretKey,
-              isRegister: false,
-              accountIndex: 1,
-              accountProtectionEnable: getAccountData[i].PasswordProtected,
-              apiUrlA2c: getAccountData[i].apiUrlA2c,
-              licenseId: getAccountData[i].licenseId,
-            };
-            localStorage.setItem("UserRegisterInfo", JSON.stringify(userAcc));
-          }
-          ////
-
-        }
-
-      }
-    }
-  }
-  localStorage.setItem("accounts", JSON.stringify(getAccountData));
-  localStorage.setItem('isFirstAppLaunch', 'Yes');
-  sessionStorage.setItem("AddEdit", "YES");
-
-  toastdata.show(`Successfully Restored`, '3000', 'bottom').subscribe(
-    toast => {
-      console.log(toast);
-
-    }
-  );
-
-
-}
-
-function getUsersData() {
   
-  const fileTransfer: FileTransferObject = transferdata.create();
-  restProviderdata.getUsers(licenceIdset, companyNameset).subscribe(
-    (result) => {
-      let resultObj = JSON.stringify(result);
-      let resultData = JSON.parse(resultObj);
-      let sucessCode = resultData.Result.SuccessCode;
-      if (sucessCode == 200) {
-        console.log('sucess');
-
-      } else if (sucessCode == 100) {
-        let alert = alertdata.create({
-          subTitle: 'Registration key not found on the database.',
-          buttons: ['Ok']
-        });
-        alert.present();
-      } else if (sucessCode == 400) {
-        let alert = alertdata.create({
-          subTitle: 'Request Failed.',
-          buttons: ['Ok']
-        });
-        alert.present();
-      } else if (sucessCode == 700) {
-        let alert = alertdata.create({
-          subTitle: 'User ID not found.',
-          buttons: ['Ok']
-        });
-        alert.present();
-      } else {
-        console.log('Sucess data' + JSON.stringify(result));
+  RestoreBackup() {
+    try{
+    debugger;
+    let loading = this.loadingCtrl.create({
+      content: commonString.welcomePage.restoreMsg,
+    });
+    loading.present();
+    this.appVersion.getVersionCode().then(driveData => {
+      loading.dismiss();
+      localStorage.setItem('isFirstAppLaunch', 'Yes');
+      let decryptedData = window.atob(driveData)
+      console.log('decrypted data' + window.atob(driveData));
+      let splittedBackup = decryptedData.split('splitSet', 2);
+      console.log('splitted ' + splittedBackup);
+      console.log('splitted 0 indexc  ' + splittedBackup[0]);
+      console.log('splitted 1 indexc  ' + splittedBackup[1]);
+      localStorage.setItem('accounts', splittedBackup[0]);
+      let getAccountData = JSON.parse(localStorage.getItem('accounts'));
+      if (getAccountData) {
+        if (getAccountData.length > 0) {
+          for (let i = 0; i < getAccountData.length; i++) {
+            if (getAccountData[i].accountProtectionPin != 0) {
+              this.protectionPin = getAccountData[i].accountProtectionPin;
+              this.accountProtection = 2;
+            } else {
+              this.protectionPin = 0;
+              this.accountProtection = 0;
+            }
+            if (getAccountData[i].imageSrc != null && getAccountData[i].imageSrc != '') {
+              if (getAccountData[i].CompanyIcon != '' && getAccountData[i].CompanyIcon != undefined) {
+                this.companyName = getAccountData[i].companyname;
+                this.licenceId = getAccountData[i].licenseId;
+                this.A2CapiUrl = getAccountData[i].A2CapiUrl;
+                localStorage.setItem('apiUrlA2c', this.A2CapiUrl);
+                this.getUsersData();
+                let userAcc = {
+                  pushPin: getAccountData[i].App_Push_Pin,
+                  companyname: getAccountData[i].companyname,
+                  SuccessCode: getAccountData[i].SuccessCode,
+                  sessionId: getAccountData[i].sessionId,
+                  tag: getAccountData[i].tag,
+                  CN: getAccountData[i].CN,
+                  CompanyIcon: getAccountData[i].CompanyIcon,
+                  OTPSecretKey: getAccountData[i].OTPSecretKey,
+                  email: getAccountData[i].email,
+                  mobile: getAccountData[i].mobile,
+                  name: getAccountData[i].name,
+                  userName: getAccountData[i].userName,
+                  accountName: getAccountData[i].CN,
+                  imageSrc: getAccountData[i].imageSrc,
+                  secretKey: getAccountData[i].OTPSecretKey,
+                  isRegister: false,
+                  accountIndex: 1,
+                  accountProtectionEnable: getAccountData[i].PasswordProtected,
+                  A2CapiUrl: getAccountData[i].A2CapiUrl,
+                  licenseId: getAccountData[i].licenseId,
+                  accountProtectionPin: getAccountData[i].accountProtectionPin,
+                };
+                localStorage.setItem('UserRegisterInfo', JSON.stringify(userAcc));
+              }
+            }
+          }
+        }
+        localStorage.setItem('accounts', JSON.stringify(getAccountData));
+        if (splittedBackup[1] == undefined) {
+          let myObj = {
+            appicationBackup: false,
+            accountProtection: this.accountProtection,
+            accountProtectionPin: this.protectionPin,
+            notificationSound: 'default',
+            vibration: true,
+            userRegister: 'unregister',
+            settingProtectionType: 0,
+            isSettingProtect: false
+          };
+          localStorage.setItem('Appsetting', JSON.stringify(myObj));
+          this.navCtrl.popToRoot();
+        } else {
+          localStorage.setItem('Appsetting', splittedBackup[1]);
+          let settingBackup = JSON.parse(localStorage.getItem('Appsetting'));
+          let oldDeviceId = settingBackup.deviceId;
+          let newDeviceBackup = JSON.parse(localStorage.getItem('Appsetting'));
+          if (this.newdeviceId != oldDeviceId) {
+            console.log('new device');
+            localStorage.setItem('ringtoneUrl', 'null');
+            if (this.fingerprint == false) {
+              if (newDeviceBackup.accountProtection == 1 && newDeviceBackup.accountProtectionPin != 0) {
+                let alert = this.alertCtrl.create({
+                  title: '',
+                  subTitle: commonString.welcomePage.biometricMsg,
+                  buttons: ['OK']
+                });
+                alert.present();
+                newDeviceBackup.accountProtection = 2;
+                newDeviceBackup.settingProtectionType = 2;
+                this.navCtrl.popToRoot();
+              } else if (newDeviceBackup.accountProtection == 1 && newDeviceBackup.accountProtectionPin == 0) {
+                let alert = this.alertCtrl.create({
+                  title: '',
+                  subTitle: commonString.welcomePage.biometricNfourDigi,
+                  buttons: ['OK']
+                });
+                alert.present();
+                newDeviceBackup.accountProtection = 2;
+                newDeviceBackup.settingProtectionType = 2;
+                this.navCtrl.push(GeneratePinPage, { settingProtectionIndex: 3 });
+              }
+              else if (newDeviceBackup.accountProtection == 2 && newDeviceBackup.accountProtectionPin != 0) {
+                let alert = this.alertCtrl.create({
+                  title: '',
+                  subTitle: commonString.welcomePage.notificationMsg,
+                  buttons: ['OK']
+                });
+                alert.present();
+                newDeviceBackup.accountProtection = 2;
+                this.navCtrl.popToRoot();
+              } else {
+                let alert = this.alertCtrl.create({
+                  title: '',
+                  subTitle: commonString.welcomePage.notificationMsg,
+                  buttons: ['OK']
+                });
+                alert.present();
+                newDeviceBackup.accountProtection = 0;
+                this.navCtrl.popToRoot();
+              }
+              localStorage.setItem('Appsetting', JSON.stringify(newDeviceBackup));
+            } else {
+              let alert = this.alertCtrl.create({
+                title: '',
+                subTitle: commonString.welcomePage.notificationMsg,
+                buttons: ['OK']
+              });
+              alert.present();
+              localStorage.setItem('Appsetting', JSON.stringify(newDeviceBackup));
+              this.navCtrl.popToRoot();
+            }
+          } else {
+            if (settingBackup.notificationSound != 'default') {
+              localStorage.setItem('ringtoneUrl', settingBackup.notificationSound);
+            }
+            console.log('old device');
+            if (this.fingerprint == false) {
+              if (newDeviceBackup.accountProtection == 1 && newDeviceBackup.accountProtectionPin != 0) {
+                newDeviceBackup.accountProtection = 2;
+                newDeviceBackup.settingProtectionType = 2;
+                this.navCtrl.popToRoot();
+              } else if (newDeviceBackup.accountProtection == 1 && newDeviceBackup.accountProtectionPin == 0) {
+                newDeviceBackup.accountProtection = 2;
+                newDeviceBackup.settingProtectionType = 2;
+                this.navCtrl.push(GeneratePinPage, { settingProtectionIndex: 3 });
+              }
+              else if (newDeviceBackup.accountProtection == 2 && newDeviceBackup.accountProtectionPin != 0) {
+                newDeviceBackup.accountProtection = 2;
+                this.navCtrl.popToRoot();
+              } else {
+                newDeviceBackup.accountProtection = 0;
+                this.navCtrl.popToRoot();
+              }
+              localStorage.setItem('Appsetting', JSON.stringify(newDeviceBackup));
+            } else {
+              localStorage.setItem('Appsetting', JSON.stringify(newDeviceBackup));
+              this.navCtrl.popToRoot();
+            }
+          }
+        }
       }
-    },
-    (error) => {
-      console.log('error api' + JSON.stringify(error));
-    }
-  );
+    });
+     } catch (error) { console.log("Error occured"); }
+  }
+
+
+  //get registered user data api respoonse
+  getUsersData() {
+    try{
+    let fileTransfer: FileTransferObject = this.transfer.create();
+    this.restProvider.getUsers(this.licenceId, this.companyName).subscribe(
+      (result) => {
+        let resultObj = JSON.stringify(result);
+        let resultData = JSON.parse(resultObj);
+        console.log(resultObj);
+        let sucessCode = resultData.Result.SuccessCode;
+        if (sucessCode == 200) {
+          let url = resultData.Result.CompanyIcon;
+          let passwordPolicy = JSON.stringify(resultData.Result.passwordPolicy);
+          console.log('passwordPolicy' + passwordPolicy);
+          localStorage.setItem('passwordPolicy', passwordPolicy);
+          this.getDataUri(url, resultData);
+        }
+        else if (sucessCode == 100) {
+          let alert = this.alertCtrl.create({
+            title: '',
+            subTitle: commonString.welcomePage.errRegistrationKey,
+            buttons: ['OK']
+          });
+        }
+        else if (sucessCode == 400) {
+          let alert = this.alertCtrl.create({
+            title: '',
+            subTitle: commonString.welcomePage.requestFailed,
+            buttons: ['OK']
+          });
+        }
+        else if (sucessCode == 700) {
+          let alert = this.alertCtrl.create({
+            title: '',
+            subTitle: commonString.welcomePage.userIdMsg,
+            buttons: ['OK']
+          });
+        }
+        else {
+          console.log('Sucess data' + JSON.stringify(result));
+        }
+      },
+      (error) => {
+        console.log('error api' + JSON.stringify(error));
+      });
+      } catch (error) { console.log("Error occured"); }
+  }
+
+  getDataUri(url, resultData) {
+    try{
+    var image = new Image();
+    image.onload = function () {
+      var canvas = document.createElement('canvas');
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      canvas.getContext('2d').drawImage(image, 0, 0);
+      localStorage.setItem('defaultimageSrc', canvas.toDataURL('image/png'));
+    };
+    image.src = url;
+      } catch (error) { console.log("Error occured"); }
+  }
 }
-
-var navCtrlnew;
-var toastdata;
-var loadingdata;
-var companyNameset;
-var licenceIdset;
-var apiUrlA2cset;
-var alertdata;
-var transferdata;
-var filedata;
-var restProviderdata;
-var deviceId;
-var str_array;
-var protectionPin;
-var accountProtection;
-
-
-
-
-
-
-
-
-
